@@ -378,6 +378,8 @@ function gtuMessage(message) {
 }
 function openResource(name, branch, sem) {
 
+    const API_URL = "https://script.google.com/macros/s/AKfycby0bqfi-jgx9FHN1kiqtvcFakgnYXaR-G5qnmROMIfySu1VknM6dbWlBn4_Ffrf86YH/exec";
+
     const typeMap = {
         "Assignments": "Assignment",
         "Notes": "Notes",
@@ -393,46 +395,75 @@ function openResource(name, branch, sem) {
         "CSE-DS": "CSE-DS"
     };
 
-    const type = typeMap[name] || name;
-    const selectedBranch = branchMap[branch] || branch;
+    branch = branch || document.getElementById("branch")?.value || "Computer Engineering";
+    sem = sem || document.getElementById("semester")?.value || "Semester 1";
 
-    fetch("https://script.google.com/macros/s/AKfycby0bqfi-jgx9FHN1kiqtvcFakgnYXaR-G5qnmROMIfySu1VknM6dbWlBn4_Ffrf86YH/exec")
-        .then(response => response.json())
+    const selectedBranch = branchMap[branch] || branch;
+    const selectedType = typeMap[name] || name;
+
+    fetch(API_URL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("API request failed");
+            }
+            return response.json();
+        })
         .then(data => {
 
             const matches = data.filter(resource =>
                 resource.branch === selectedBranch &&
                 resource.semester === sem &&
-                resource.type === type
+                resource.type === selectedType
             );
 
+            let resourceLinks = "";
+
             if (matches.length === 0) {
-                alert("No " + name + " resources found for " + branch + " • " + sem);
-                return;
+
+                resourceLinks = `
+                    <p style="margin-top:20px;">
+                        No resources found for this selection.
+                    </p>
+                `;
+
+            } else {
+
+                resourceLinks = matches.map((resource, index) => `
+                    <a
+                        href="${resource.file}"
+                        target="_blank"
+                        style="
+                            display:block;
+                            margin:10px 0;
+                            padding:12px 16px;
+                            background:#667eea;
+                            color:white;
+                            text-decoration:none;
+                            border-radius:10px;
+                            font-weight:600;
+                        "
+                    >
+                        📄 ${name} ${index + 1} — Open Resource
+                    </a>
+                `).join("");
+
             }
 
-            let links = "";
-
-            matches.forEach((resource, index) => {
-                links += `
-                    <a href="${resource.file}" target="_blank"
-                       style="display:block;margin:10px 0;padding:12px 16px;
-                       background:#667eea;color:white;text-decoration:none;
-                       border-radius:10px;font-weight:600;">
-                       📄 ${name} ${index + 1} - Open Resource
-                    </a>
-                `;
-            });
-
             const resourceBox = document.createElement("div");
+
             resourceBox.id = "gtuResourceList";
 
             resourceBox.innerHTML = `
                 <div class="gtu-overlay">
+
                     <div class="gtu-popup">
 
-                        <button class="gtu-close"
-                        onclick="document.getElementById('gtuResourceList').remove()">×</button>
+                        <button
+                            class="gtu-close"
+                            onclick="document.getElementById('gtuResourceList').remove()"
+                        >
+                            ×
+                        </button>
 
                         <div class="gtu-icon">📚</div>
 
@@ -442,9 +473,12 @@ function openResource(name, branch, sem) {
                             ${branch} • ${sem}
                         </p>
 
-                        ${links}
+                        <div>
+                            ${resourceLinks}
+                        </div>
 
                     </div>
+
                 </div>
             `;
 
@@ -452,11 +486,13 @@ function openResource(name, branch, sem) {
 
         })
         .catch(error => {
+
             console.error(error);
+
             alert("Unable to load resources. Please try again.");
+
         });
 }
-
 function search() {
 
     const input = document.getElementById("searchBox");
