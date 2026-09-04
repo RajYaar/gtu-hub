@@ -320,20 +320,178 @@ GTU HUB © 2026 · Built for students, by students.
 </div>
 
 <script>
-function openResource(name){
-let branch=document.getElementById("branch").value;
-let sem=document.getElementById("semester").value;
-alert(name+" for "+branch+" — "+sem+" will appear here soon!");
+
+function openResource(name) {
+
+    const branch = document.getElementById("branch")?.value || "Computer Engineering";
+    const sem = document.getElementById("semester")?.value || "Semester 1";
+
+    const oldBox = document.getElementById("gtuResourceBox");
+    if (oldBox) oldBox.remove();
+
+    const box = document.createElement("div");
+    box.id = "gtuResourceBox";
+
+    box.innerHTML = `
+        <div class="gtu-overlay">
+            <div class="gtu-popup">
+
+                <button class="gtu-close"
+                onclick="document.getElementById('gtuResourceBox').remove()">
+                ×
+                </button>
+
+                <div class="gtu-icon">📚</div>
+
+                <h2>${name}</h2>
+
+                <p class="gtu-selected">
+                    ${branch} • ${sem}
+                </p>
+
+                <p>
+                    Select your study resource below.
+                </p>
+
+                <div class="gtu-buttons">
+
+                    <button onclick="gtuMessage('Viewing ' + '${name}')">
+                        📖 View Resources
+                    </button>
+
+                    <button onclick="gtuMessage('Upload system')">
+                        ⬆️ Upload
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(box);
 }
 
-function search(){
-let q=document.getElementById("searchBox").value;
-if(q.trim()==""){
-alert("Type something to search.");
-}else{
-alert("Searching GTU HUB for: "+q);
+
+function gtuMessage(message) {
+    alert(message + " is coming soon to GTUHUB!");
 }
+
+
+function search() {
+
+    const input = document.getElementById("searchBox");
+
+    if (!input) return;
+
+    const query = input.value.trim().toLowerCase();
+
+    if (query === "") {
+        alert("Please type something to search.");
+        return;
+    }
+
+    const cards = document.querySelectorAll(".card");
+
+    let found = false;
+
+    cards.forEach(card => {
+
+        const text = card.innerText.toLowerCase();
+
+        if (text.includes(query)) {
+
+            card.style.outline = "2px solid #6c8cff";
+            card.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            found = true;
+
+        } else {
+
+            card.style.outline = "";
+
+        }
+
+    });
+
+    if (!found) {
+        alert("No resource found for: " + input.value);
+    }
 }
+
+
+/* GTUHUB popup design */
+
+const gtuStyle = document.createElement("style");
+
+gtuStyle.innerHTML = `
+
+.gtu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.gtu-popup {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    background: #111827;
+    border: 1px solid #34416b;
+    border-radius: 24px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.gtu-close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 32px;
+}
+
+.gtu-icon {
+    font-size: 45px;
+}
+
+.gtu-selected {
+    color: #8da5ff;
+    font-weight: bold;
+}
+
+.gtu-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.gtu-buttons button {
+    border: none;
+    border-radius: 12px;
+    padding: 13px 18px;
+    background: #6c8cff;
+    color: white;
+    font-weight: bold;
+}
+
+`;
+
+document.head.appendChild(gtuStyle);
+
 </script>
 
 </body>
