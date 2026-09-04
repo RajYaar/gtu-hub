@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTU HUB — Your Semester, One Place</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Arial,sans-serif;
+background:#080b14;
+color:#fff;
+min-height:100vh;
+}
+.container{max-width:1100px;margin:auto;padding:20px}
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 0;
+}
+.logo{font-size:25px;font-weight:800}
+.logo span{color:#6c8cff}
+.navbtn{
+background:#151b2d;
+border:1px solid #29324d;
+color:white;
+padding:10px 15px;
+border-radius:12px;
+}
+.hero{
+text-align:center;
+padding:65px 15px 40px;
+}
+.badge{
+display:inline-block;
+background:#151d38;
+border:1px solid #2b3d73;
+color:#8da8ff;
+padding:8px 14px;
+border-radius:30px;
+font-size:13px;
+margin-bottom:20px;
+}
+h1{
+font-size:clamp(40px,8vw,72px);
+line-height:1;
+margin-bottom:18px;
+}
+.gradient{
+background:linear-gradient(90deg,#6d8cff,#b27cff);
+-webkit-background-clip:text;
+color:transparent;
+}
+.hero p{
+color:#9da7bd;
+font-size:17px;
+max-width:600px;
+margin:auto;
+line-height:1.6;
+}
+.search{
+margin:30px auto;
+max-width:650px;
+display:flex;
+background:#111727;
+border:1px solid #29334e;
+border-radius:16px;
+padding:6px;
+}
+.search input{
+flex:1;
+background:none;
+border:0;
+outline:0;
+color:white;
+padding:14px;
+font-size:15px;
+}
+.search button{
+border:0;
+background:#6c8cff;
+color:white;
+padding:12px 20px;
+border-radius:11px;
+font-weight:bold;
+}
+.section-title{
+margin:35px 0 18px;
+font-size:23px;
+}
+.filters{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+select{
+width:100%;
+padding:15px;
+background:#111727;
+border:1px solid #29334e;
+border-radius:13px;
+color:white;
+font-size:15px;
+}
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+}
+.card{
+background:#101625;
+border:1px solid #242e47;
+border-radius:18px;
+padding:22px;
+transition:.2s;
+}
+.card:hover{transform:translateY(-3px);border-color:#6179d9}
+.icon{font-size:30px;margin-bottom:12px}
+.card h3{margin-bottom:7px}
+.card p{color:#8f99af;font-size:13px;line-height:1.5}
+.subjects{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+.subject{
+background:#101625;
+border:1px solid #242e47;
+padding:18px;
+border-radius:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+.subject small{color:#818ca5}
+.ai{
+margin:35px 0;
+padding:30px;
+border-radius:22px;
+background:linear-gradient(135deg,#151d39,#21172f);
+border:1px solid #343d68;
+}
+.ai h2{margin-bottom:10px}
+.ai p{color:#a4acc0;line-height:1.6;margin-bottom:18px}
+.ai button{
+background:#fff;
+color:#111;
+border:0;
+padding:13px 20px;
+border-radius:12px;
+font-weight:bold;
+}
+footer{
+text-align:center;
+padding:40px 10px;
+color:#68738c;
+font-size:13px;
+}
+@media(max-width:700px){
+.container{padding:15px}
+.hero{padding-top:45px}
+.cards{grid-template-columns:1fr 1fr}
+.subjects{grid-template-columns:1fr}
+h1{font-size:48px}
+}
+@media(max-width:430px){
+.cards{grid-template-columns:1fr 1fr}
+.card{padding:17px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<nav>
+<div class="logo">GTU<span>HUB</span></div>
+<button class="navbtn" onclick="alert('Upload system coming next!')">＋ Upload</button>
+</nav>
+
+<section class="hero">
+
+<div class="badge">🎓 Made for GTU Students</div>
+
+<h1>
+Your Semester.<br>
+<span class="gradient">One Place.</span>
+</h1>
+
+<p>
+Assignments, notes, previous papers, practicals and AI study tools —
+organized for your GTU journey.
+</p>
+
+<div class="search">
+<input id="searchBox" placeholder="Search assignments, subjects, notes...">
+<button onclick="search()">Search</button>
+</div>
+
+</section>
+
+<h2 class="section-title">Choose Your Semester</h2>
+
+<div class="filters">
+
+<select id="branch">
+<option>Computer Engineering</option>
+<option>Information Technology</option>
+<option>Artificial Intelligence & ML</option>
+<option>Electronics & Communication</option>
+<option>Electrical Engineering</option>
+<option>Mechanical Engineering</option>
+<option>Civil Engineering</option>
+<option>Chemical Engineering</option>
+</select>
+
+<select id="semester">
+<option>Semester 1</option>
+<option>Semester 2</option>
+<option>Semester 3</option>
+<option>Semester 4</option>
+<option>Semester 5</option>
+<option>Semester 6</option>
+<option>Semester 7</option>
+<option>Semester 8</option>
+</select>
+
+</div>
+
+<h2 class="section-title">Study Resources</h2>
+
+<div class="cards">
+
+<div class="card" onclick="openResource('Assignments')">
+<div class="icon">📝</div>
+<h3>Assignments</h3>
+<p>Find semester assignments in one organized place.</p>
+</div>
+
+<div class="card" onclick="openResource('Notes')">
+<div class="icon">📚</div>
+<h3>Notes</h3>
+<p>Subject-wise notes and study material.</p>
+</div>
+
+<div class="card" onclick="openResource('Previous Papers')">
+<div class="icon">📄</div>
+<h3>PYQs</h3>
+<p>Previous year question papers and exam material.</p>
+</div>
+
+<div class="card" onclick="openResource('Practicals')">
+<div class="icon">💻</div>
+<h3>Practicals</h3>
+<p>Practical files, programs and useful resources.</p>
+</div>
+
+</div>
+
+<h2 class="section-title">Subjects</h2>
+
+<div class="subjects">
+
+<div class="subject">
+<div>
+<strong>Database Management System</strong><br>
+<small>DBMS</small>
+</div>
+<span>→</span>
+</div>
+
+<div class="subject">
+<div>
+<strong>Operating System</strong><br>
+<small>OS</small>
+</div>
+<span>→</span>
+</div>
+
+<div class="subject">
+<div>
+<strong>Computer Networks</strong><br>
+<small>CN</small>
+</div>
+<span>→</span>
+</div>
+
+<div class="subject">
+<div>
+<strong>Web Development</strong><br>
+<small>WD</small>
+</div>
+<span>→</span>
+</div>
+
+</div>
+
+<section class="ai">
+
+<h2>🤖 GTU AI</h2>
+
+<p>
+Your future AI study assistant. Ask questions, explain difficult topics,
+generate quizzes, summarize notes and prepare for exams.
+</p>
+
+<button onclick="alert('AI Assistant will be connected in the next version!')">
+Try GTU AI →
+</button>
+
+</section>
+
+<footer>
+GTU HUB © 2026 · Built for students, by students.
+</footer>
+
+</div>
+
+<script>
+function openResource(name){
+let branch=document.getElementById("branch").value;
+let sem=document.getElementById("semester").value;
+alert(name+" for "+branch+" — "+sem+" will appear here soon!");
+}
+
+function search(){
+let q=document.getElementById("searchBox").value;
+if(q.trim()==""){
+alert("Type something to search.");
+}else{
+alert("Searching GTU HUB for: "+q);
+}
+}
+</script>
+
+</body>
+</html>
