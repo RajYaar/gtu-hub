@@ -397,7 +397,7 @@ function viewResources(name, branch, sem) {
 
     const selectedBranch = branchMap[branch] || branch;
 
-    fetch("https://script.google.com/macros/s/AKfycby0bqfi-jgx9FHN1kiqtvcFakgnYXaR-G5qnmROMIfySu1VknM6dbWlBn4_Ffrf86YH/exec")
+    fetch("https://script.google.com/macros/s/AKfYcby0bqfi-jgx9FHN1kiqtvcFakgnYXaR-G5qnmROMIfySu1VknM6dbWlBn4_Ffrf86YH/exec")
         .then(response => response.json())
         .then(data => {
 
@@ -411,6 +411,48 @@ function viewResources(name, branch, sem) {
                 alert("No " + name + " resources found for " + branch + " • " + sem);
                 return;
             }
+
+            let resourceLinks = matches.map((resource, index) =>
+                `<a href="${resource.file}" target="_blank"
+                style="display:block; margin:10px 0; padding:12px 16px;
+                background:#667eea; color:white; text-decoration:none;
+                border-radius:10px; font-weight:600;">
+                📄 ${name} ${index + 1} — Open Resource
+                </a>`
+            ).join("");
+
+            alert(name + " resources found!");
+
+            const box = document.getElementById("gtuResourceBox");
+
+            if (box) {
+                const popup = box.querySelector(".gtu-popup");
+
+                if (popup) {
+                    popup.innerHTML = `
+                        <button class="gtu-close"
+                        onclick="document.getElementById('gtuResourceBox').remove()">
+                        ×
+                        </button>
+
+                        <div class="gtu-icon">📚</div>
+
+                        <h2>${name} Resources</h2>
+
+                        <p class="gtu-selected">
+                            ${branch} • ${sem}
+                        </p>
+
+                        ${resourceLinks}
+                    `;
+                }
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            alert("Unable to load resources. Please try again.");
+        });
+}
 
             let resourceLinks = matches.map((resource, index) => `
     <a href="${resource.file}" target="_blank"
