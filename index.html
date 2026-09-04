@@ -355,7 +355,7 @@ function openResource(name) {
 
                 <div class="gtu-buttons">
 
-                    <button onclick="gtuMessage('Viewing ' + '${name}')">
+                    <button onclick="viewResources('${name}', branch, sem)">
                         📖 View Resources
                     </button>
 
@@ -375,6 +375,55 @@ function openResource(name) {
 
 function gtuMessage(message) {
     alert(message + " is coming soon to GTUHUB!");
+}
+function viewResources(name, branch, sem) {
+
+    const typeMap = {
+        "Assignments": "Assignment",
+        "Notes": "Notes",
+        "PYQs": "Previous Year",
+        "Practicals": "Practical",
+        "Question Bank": "Question Bank"
+    };
+
+    const type = typeMap[name] || name;
+
+    const branchMap = {
+        "Computer Engineering": "CSE",
+        "CSE": "CSE",
+        "CSE-AIML": "CSE-AIML",
+        "CSE-DS": "CSE-DS"
+    };
+
+    const selectedBranch = branchMap[branch] || branch;
+
+    fetch("https://script.google.com/macros/s/AKfycby0bqfi-jgx9FHN1kiqtvcFakgnYXaR-G5qnmROMIfySu1VknM6dbWlBn4_Ffrf86YH/exec")
+        .then(response => response.json())
+        .then(data => {
+
+            const matches = data.filter(resource =>
+                resource.branch === selectedBranch &&
+                resource.semester === sem &&
+                resource.type === type
+            );
+
+            if (matches.length === 0) {
+                alert("No " + name + " resources found for " + branch + " • " + sem);
+                return;
+            }
+
+            let message = name + " Resources:\\n\\n";
+
+            matches.forEach((resource, index) => {
+                message += (index + 1) + ". " + resource.file + "\\n";
+            });
+
+            alert(message);
+        })
+        .catch(error => {
+            console.error(error);
+            alert("Unable to load resources. Please try again.");
+        });
 }
 
 
