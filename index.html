@@ -337,9 +337,10 @@ sem = sem || document.getElementById("semester")?.value || "Semester 1";
     "Notes": "Notes",
     "PYQ": "Previous Year",
     "PYQs": "Previous Year",
-        "Practicals": "Practical",
-        "Question Bank": "Question Bank"
-    };
+    "Previous Papers": "Previous Year",
+    "Practicals": "Practical",
+    "Question Bank": "Question Bank"
+};
 
     const branchMap = {
         "Computer Engineering": "CSE",
@@ -352,7 +353,7 @@ sem = sem || document.getElementById("semester")?.value || "Semester 1";
     sem = sem || document.getElementById("semester")?.value || "Semester 1";
 
     const selectedBranch = branchMap[branch] || branch;
-    const selectedType = typeMap[name] || name;
+    const selectedType = typemap[name] || name;
 
     fetch(API_URL)
         .then(response => {
