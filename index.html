@@ -412,13 +412,38 @@ function viewResources(name, branch, sem) {
                 return;
             }
 
-            let message = name + " Resources:\\n\\n";
+            let resourceLinks = matches.map((resource, index) => `
+    <a href="${resource.file}" target="_blank"
+       style="display:block; margin:10px 0; padding:12px 16px;
+              background:#667eea; color:white; text-decoration:none;
+              border-radius:10px; font-weight:600;">
+        📄 ${name} ${index + 1} — Open Resource
+    </a>
+`).join("");
 
-            matches.forEach((resource, index) => {
-                message += (index + 1) + ". " + resource.file + "\\n";
-            });
+const resourceBox = document.createElement("div");
+resourceBox.id = "gtuResourceList";
 
-            alert(message);
+resourceBox.innerHTML = `
+    <div class="gtu-overlay">
+        <div class="gtu-popup">
+            <button class="gtu-close"
+            onclick="document.getElementById('gtuResourceList').remove()">×</button>
+
+            <div class="gtu-icon">📚</div>
+
+            <h2>${name} Resources</h2>
+
+            <p class="gtu-selected">
+                ${branch} • ${sem}
+            </p>
+
+            ${resourceLinks}
+        </div>
+    </div>
+`;
+
+document.body.appendChild(resourceBox);
         })
         .catch(error => {
             console.error(error);
