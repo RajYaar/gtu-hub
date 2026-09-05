@@ -392,6 +392,7 @@ sem = sem || document.getElementById("semester")?.value || "Semester 1";
 
     const selectedBranch = branchMap[branch] || branch;
     const selectedType = typemap[name] || name;
+    const selectedSubject = document.getElementById("subject")?.value || "";
 
     fetch(API_URL)
         .then(response => {
@@ -403,10 +404,11 @@ sem = sem || document.getElementById("semester")?.value || "Semester 1";
         .then(data => {
 
             const matches = data.filter(resource =>
-                resource.branch === selectedBranch &&
-                resource.semester === sem &&
-                resource.type === selectedType
-            );
+    resource.branch === selectedBranch &&
+    resource.semester === sem &&
+    resource.type === selectedType &&
+    (!selectedSubject || resource.subject === selectedSubject)
+);
 
             let resourceLinks = "";
 
