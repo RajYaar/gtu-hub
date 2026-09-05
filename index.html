@@ -3,113 +3,1313 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>GTU HUB — Your Semester, One Place</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+
+/* =========================
+   RESET
+========================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+
+/* =========================
+   BODY
+========================= */
+
 body{
-font-family:Arial,sans-serif;
-background:#080b14;
-color:#fff;
-min-height:100vh;
+    font-family:Arial,sans-serif;
+    background:#080b14;
+    color:#fff;
+    min-height:100vh;
 }
-.container{max-width:1100px;margin:auto;padding:20px}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
 nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 0;
 }
-.logo{font-size:25px;font-weight:800}
-.logo span{color:#6c8cff}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#6c8cff;
+}
+
 .navbtn{
-background:#151b2d;
-border:1px solid #29324d;
-color:white;
-padding:10px 15px;
-border-radius:12px;
+    background:#151b2d;
+    border:1px solid #29324d;
+    color:white;
+    padding:10px 15px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
 }
+
+.navbtn:hover{
+    background:#202a45;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
 .hero{
-text-align:center;
-padding:65px 15px 40px;
+    text-align:center;
+    padding:65px 15px 40px;
 }
+
 .badge{
-display:inline-block;
-background:#151d38;
-border:1px solid #2b3d73;
-color:#8da8ff;
-padding:8px 14px;
-border-radius:30px;
-font-size:13px;
-margin-bottom:20px;
+    display:inline-block;
+    background:#151d38;
+    border:1px solid #2b3d73;
+    color:#8da8ff;
+    padding:8px 14px;
+    border-radius:30px;
+    font-size:13px;
+    margin-bottom:20px;
 }
+
 h1{
-font-size:clamp(40px,8vw,72px);
-line-height:1;
-margin-bottom:18px;
+    font-size:clamp(40px,8vw,72px);
+    line-height:1;
+    margin-bottom:18px;
 }
+
 .gradient{
-background:linear-gradient(90deg,#6d8cff,#b27cff);
--webkit-background-clip:text;
-color:transparent;
+    background:linear-gradient(90deg,#6d8cff,#b27cff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
 }
+
 .hero p{
-color:#9da7bd;
-font-size:17px;
-max-width:600px;
-margin:auto;
-line-height:1.6;
+    color:#9da7bd;
+    font-size:17px;
+    max-width:600px;
+    margin:auto;
+    line-height:1.6;
 }
+
+
+/* =========================
+   SEARCH
+========================= */
+
 .search{
-margin:30px auto;
-max-width:650px;
-display:flex;
-background:#111727;
-border:1px solid #29334e;
-border-radius:16px;
-padding:6px;
+    margin:30px auto;
+    max-width:650px;
+    display:flex;
+    background:#111727;
+    border:1px solid #29334e;
+    border-radius:16px;
+    padding:6px;
 }
+
 .search input{
-flex:1;
-background:none;
-border:0;
-outline:0;
-color:white;
-padding:14px;
-font-size:15px;
+    flex:1;
+    min-width:0;
+    background:none;
+    border:0;
+    outline:0;
+    color:white;
+    padding:14px;
+    font-size:15px;
 }
+
+.search input::placeholder{
+    color:#68738c;
+}
+
 .search button{
-border:0;
-background:#6c8cff;
-color:white;
-padding:12px 20px;
-border-radius:11px;
-font-weight:bold;
+    border:0;
+    background:#6c8cff;
+    color:white;
+    padding:12px 20px;
+    border-radius:11px;
+    font-weight:bold;
+    cursor:pointer;
 }
+
+.search button:hover{
+    background:#7d9aff;
+}
+
+
+/* =========================
+   SECTION TITLES
+========================= */
+
 .section-title{
-margin:35px 0 18px;
-font-size:23px;
+    margin:35px 0 18px;
+    font-size:23px;
 }
+
+
+/* =========================
+   FILTERS
+========================= */
+
 .filters{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
 }
+
 select{
-width:100%;
-padding:15px;
-background:#111727;
-border:1px solid #29334e;
-border-radius:13px;
-color:white;
-font-size:15px;
+    width:100%;
+    padding:15px;
+    background:#111727;
+    border:1px solid #29334e;
+    border-radius:13px;
+    color:white;
+    font-size:15px;
+    outline:none;
+    cursor:pointer;
 }
+
+select:focus{
+    border-color:#6c8cff;
+}
+
+select option{
+    background:#111727;
+    color:white;
+}
+
+
+/* =========================
+   RESOURCE CARDS
+========================= */
+
 .cards{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:15px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
 }
+
 .card{
+    background:#101625;
+    border:1px solid #242e47;
+    border-radius:18px;
+    padding:22px;
+    transition:.2s;
+    cursor:pointer;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    border-color:#6179d9;
+    background:#131c31;
+}
+
+.card:active{
+    transform:scale(.98);
+}
+
+.icon{
+    font-size:30px;
+    margin-bottom:12px;
+}
+
+.card h3{
+    margin-bottom:7px;
+}
+
+.card p{
+    color:#8f99af;
+    font-size:13px;
+    line-height:1.5;
+}
+
+
+/* =========================
+   SUBJECTS
+========================= */
+
+.subjects{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.subject{
+    background:#101625;
+    border:1px solid #242e47;
+    padding:18px;
+    border-radius:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.subject:hover{
+    border-color:#6179d9;
+    transform:translateY(-2px);
+}
+
+.subject small{
+    color:#818ca5;
+}
+
+
+/* =========================
+   AI SECTION
+========================= */
+
+.ai{
+    margin:35px 0;
+    padding:30px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#151d39,#21172f);
+    border:1px solid #343d68;
+}
+
+.ai h2{
+    margin-bottom:10px;
+}
+
+.ai p{
+    color:#a4acc0;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.ai button{
+    background:#fff;
+    color:#111;
+    border:0;
+    padding:13px 20px;
+    border-radius:12px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.ai button:hover{
+    background:#e9ecf5;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    text-align:center;
+    padding:40px 10px;
+    color:#68738c;
+    font-size:13px;
+}
+
+
+/* =========================
+   POPUP
+========================= */
+
+.gtu-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:99999;
+}
+
+.gtu-popup{
+    width:100%;
+    max-width:550px;
+    max-height:85vh;
+    overflow-y:auto;
+    background:#101625;
+    border:1px solid #343d68;
+    border-radius:22px;
+    padding:28px;
+    color:white;
+    position:relative;
+    box-shadow:0 20px 70px rgba(0,0,0,.6);
+}
+
+.gtu-close{
+    position:absolute;
+    right:15px;
+    top:12px;
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:#252d43;
+    color:white;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.gtu-close:hover{
+    background:#343d55;
+}
+
+.gtu-icon{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+.gtu-popup h2{
+    margin-bottom:8px;
+}
+
+.gtu-selected{
+    color:#9da7bd;
+    margin-bottom:20px;
+    line-height:1.5;
+}
+
+.gtu-resource-link{
+    display:block;
+    margin:10px 0;
+    padding:13px 16px;
+    background:#667eea;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:600;
+}
+
+.gtu-resource-link:hover{
+    background:#788af0;
+}
+
+.gtu-upload-btn{
+    margin-top:15px;
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    background:white;
+    color:#111;
+}
+
+.gtu-upload-btn:hover{
+    background:#e9ecf5;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+    .container{
+        padding:15px;
+    }
+
+    .hero{
+        padding-top:45px;
+    }
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .subjects{
+        grid-template-columns:1fr;
+    }
+
+    .filters{
+        grid-template-columns:1fr;
+    }
+
+    h1{
+        font-size:48px;
+    }
+
+    .search{
+        width:100%;
+    }
+
+    .search button{
+        padding-left:16px;
+        padding-right:16px;
+    }
+}
+
+
+@media(max-width:430px){
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+    .card h3{
+        font-size:16px;
+    }
+
+    .card p{
+        font-size:12px;
+    }
+
+    .logo{
+        font-size:23px;
+    }
+
+    .hero p{
+        font-size:15px;
+    }
+
+    .gtu-popup{
+        padding:22px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        GTU<span>HUB</span>
+    </div>
+
+    <button
+        class="navbtn"
+        onclick="openUploadForm()"
+    >
+        ＋ Upload
+    </button>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="badge">
+        🎓 Made for GTU Students
+    </div>
+
+    <h1>
+        Your Semester.<br>
+        <span class="gradient">One Place.</span>
+    </h1>
+
+    <p>
+        Assignments, notes, previous papers, practicals
+        and AI study tools — organized for your GTU journey.
+    </p>
+
+
+    <!-- SEARCH -->
+
+    <div class="search">
+
+        <input
+            id="searchBox"
+            type="text"
+            placeholder="Search assignments, subjects, notes..."
+            onkeydown="handleSearchKey(event)"
+        >
+
+        <button
+            onclick="searchResources()"
+        >
+            Search
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FILTERS
+========================= -->
+
+<h2 class="section-title">
+    Choose Your Semester
+</h2>
+
+
+<div class="filters">
+
+    <select id="branch">
+
+        <option value="CSE">
+            CSE
+        </option>
+
+        <option value="CSE-DS">
+            CSE-DS
+        </option>
+
+        <option value="CSE-AIML">
+            CSE-AIML
+        </option>
+
+    </select>
+
+
+    <select id="semester">
+
+        <option value="Semester 1">
+            Semester 1
+        </option>
+
+        <option value="Semester 2">
+            Semester 2
+        </option>
+
+        <option value="Semester 3">
+            Semester 3
+        </option>
+
+        <option value="Semester 4">
+            Semester 4
+        </option>
+
+        <option value="Semester 5">
+            Semester 5
+        </option>
+
+        <option value="Semester 6">
+            Semester 6
+        </option>
+
+        <option value="Semester 7">
+            Semester 7
+        </option>
+
+        <option value="Semester 8">
+            Semester 8
+        </option>
+
+    </select>
+
+
+    <select id="subject">
+
+        <option value="">
+            All Subjects
+        </option>
+
+    </select>
+
+</div>
+
+
+<!-- =========================
+     STUDY RESOURCES
+========================= -->
+
+<h2 class="section-title">
+    Study Resources
+</h2>
+
+
+<div class="cards">
+
+
+    <!-- ASSIGNMENTS -->
+
+    <div
+        class="card"
+        onclick="openResource('Assignments')"
+    >
+
+        <div class="icon">
+            📝
+        </div>
+
+        <h3>
+            Assignments
+        </h3>
+
+        <p>
+            Find semester assignments in one organized place.
+        </p>
+
+    </div>
+
+
+    <!-- NOTES -->
+
+    <div
+        class="card"
+        onclick="openResource('Notes')"
+    >
+
+        <div class="icon">
+            📚
+        </div>
+
+        <h3>
+            Notes
+        </h3>
+
+        <p>
+            Subject-wise notes and study material.
+        </p>
+
+    </div>
+
+
+    <!-- PYQS -->
+
+    <div
+        class="card"
+        onclick="openResource('Previous Papers')"
+    >
+
+        <div class="icon">
+            📄
+        </div>
+
+        <h3>
+            PYQs
+        </h3>
+
+        <p>
+            Previous year question papers and exam material.
+        </p>
+
+    </div>
+
+
+    <!-- PRACTICALS -->
+
+    <div
+        class="card"
+        onclick="openResource('Practicals')"
+    >
+
+        <div class="icon">
+            💻
+        </div>
+
+        <h3>
+            Practicals
+        </h3>
+
+        <p>
+            Practical files, programs and useful resources.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     SUBJECTS
+========================= -->
+
+<h2 class="section-title">
+    Subjects
+</h2>
+
+
+<div
+    class="subjects"
+    id="subjectsList"
+>
+</div>
+
+
+<!-- =========================
+     AI
+========================= -->
+
+<section class="ai">
+
+    <h2>
+        🤖 GTU AI
+    </h2>
+
+    <p>
+        Your future AI study assistant. Ask questions,
+        explain difficult topics, generate quizzes,
+        summarize notes and prepare for exams.
+    </p>
+
+    <button
+        onclick="gtuMessage('GTU AI')"
+    >
+        Try GTU AI →
+    </button>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    GTU HUB © 2026 · Built for students, by students.
+
+</footer>
+
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   API
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyWZ-1031cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPWhvpUwlwpgA9IpMMmy7kQX5/exec";
+
+
+/* =====================================================
+   GOOGLE FORM
+===================================================== */
+
+const FORM_URL =
+"https://forms.gle/493aiSTtKXrUL5st9";
+
+
+/* =====================================================
+   SUBJECT DATABASE
+===================================================== */
+
+const subjectsBySemester = {
+
+    "Semester 1": [
+
+        "Mathematics-1",
+
+        "Engineering Graphics & Design",
+
+        "Universal Human Values",
+
+        "BE",
+
+        "Physics"
+
+    ],
+
+
+    "Semester 2": [
+
+        "Mathematics-2",
+
+        "Basic Electrical Engineering",
+
+        "Basic Mechanical Engineering",
+
+        "Programming for Problem Solving",
+
+        "English for Technical Communication",
+
+        "Fundamental of AI"
+
+    ],
+
+
+    "Semester 3": [
+
+        "DS",
+
+        "PS",
+
+        "PCE",
+
+        "DF",
+
+        "DBMS",
+
+        "I.C"
+
+    ],
+
+
+    "Semester 4": [],
+
+
+    "Semester 5": [],
+
+
+    "Semester 6": [],
+
+
+    "Semester 7": [],
+
+
+    "Semester 8": []
+
+};
+
+
+/* =====================================================
+   SUBJECT DISPLAY NAMES
+===================================================== */
+
+const subjectDisplayNames = {
+
+    "DS":"Data Structures",
+
+    "PS":"Probability & Statistics",
+
+    "PCE":"Professional Communication & English",
+
+    "DF":"Digital Fundamentals",
+
+    "DBMS":"Database Management System",
+
+    "I.C":"Indian Constitution"
+
+};
+
+
+/* =====================================================
+   RESOURCE TYPE MAP
+===================================================== */
+
+const typeMap = {
+
+    "Assignments":"Assignment",
+
+    "Notes":"Notes",
+
+    "PYQ":"Previous Year",
+
+    "PYQs":"Previous Year",
+
+    "Previous Papers":"Previous Year",
+
+    "Previous Year Paper (PYQ)":"Previous Year",
+
+    "Practicals":"Practical",
+
+    "Question Bank":"Question Bank"
+
+};
+
+
+/* =====================================================
+   BRANCH MAP
+===================================================== */
+
+const branchMap = {
+
+    "Computer Engineering":"CSE",
+
+    "CSE":"CSE",
+
+    "CSE-DS":"CSE-DS",
+
+    "CSE-AIML":"CSE-AIML"
+
+};
+
+
+/* =====================================================
+   LOAD SUBJECT DROPDOWN
+===================================================== */
+
+function loadSubjects(){
+
+    const semesterSelect =
+        document.getElementById("semester");
+
+    const subjectSelect =
+        document.getElementById("subject");
+
+
+    if(
+        !semesterSelect ||
+        !subjectSelect
+    ){
+        return;
+    }
+
+
+    const semester =
+        semesterSelect.value;
+
+
+    subjectSelect.innerHTML =
+        '<option value="">All Subjects</option>';
+
+
+    const subjects =
+        subjectsBySemester[semester] || [];
+
+
+    subjects.forEach(function(subject){
+
+        const option =
+            document.createElement("option");
+
+
+        option.value =
+            subject;
+
+
+        option.textContent =
+            subjectDisplayNames[subject] ||
+            subject;
+
+
+        subjectSelect.appendChild(option);
+
+    });
+
+
+    updateSubjectsSection();
+
+}
+
+
+/* =====================================================
+   SUBJECT SECTION
+===================================================== */
+
+function updateSubjectsSection(){
+
+    const semester =
+        document.getElementById("semester")?.value;
+
+
+    const subjectsList =
+        document.getElementById("subjectsList");
+
+
+    if(!subjectsList){
+        return;
+    }
+
+
+    subjectsList.innerHTML = "";
+
+
+    const subjects =
+        subjectsBySemester[semester] || [];
+
+
+    if(subjects.length === 0){
+
+        subjectsList.innerHTML = `
+
+            <div
+                class="subject"
+                style="cursor:default;"
+            >
+
+                <div>
+
+                    <strong>
+                        Subjects coming soon
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        Resources for ${semester}
+                        will be added soon.
+                    </small>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    subjects.forEach(function(subject){
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "subject";
+
+
+        item.onclick =
+            function(){
+
+                document.getElementById("subject").value =
+                    subject;
+
+                openResource("Notes");
+
+            };
+
+
+        const displayName =
+            subjectDisplayNames[subject] ||
+            subject;
+
+
+        item.innerHTML = `
+
+            <div>
+
+                <strong>
+                    ${displayName}
+                </strong>
+
+                <br>
+
+                <small>
+                    ${subject}
+                </small>
+
+            </div>
+
+            <span>
+                →
+            </span>
+
+        `;
+
+
+        subjectsList.appendChild(item);
+
+    });
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function gtuMessage(message){
+
+    alert(
+        message +
+        " is coming soon to GTUHUB!"
+    );
+
+}
+
+
+/* =====================================================
+   UPLOAD
+===================================================== */
+
+function openUploadForm(){
+
+    window.open(
+        FORM_URL,
+        "_blank"
+    );
+
+}
+
+
+/* =====================================================
+   SEARCH ENTER KEY
+===================================================== */
+
+function handleSearchKey(event){
+
+    if(event.key === "Enter"){
+
+        searchResources();
+
+    }
+
+}
+
+
+/* =====================================================
+   OPEN RESOURCE
+===================================================== */
+
+function openResource(
+    name,
+    branch,
+    sem
+){
+
+    branch =
+        branch ||
+        document.getElementById("branch")?.value ||
+        "CSE";
+
+
+    sem =
+        sem ||
+        document.getElementById("semester")?.value ||
+        "Semester 1";
+
+
+    const selectedBranch =
+        branchMap[branch] ||
+        branch;
+
+
+    const selectedType =
+        typeMap[name] ||
+        name;
+
+
+    const selectedSubject =
+        document.getElementById("subject")?.value ||
+        "";
+
+
+    /* Remove existing popup */
+
+    const oldPopup =
+        document.getElementById(
+            "gtuResourceList"
+        );
+
+
+    if(oldPopup){
+        oldPopup.remove();
+    }
+
+
+    /* Loading popup */
+
+    const loadingBox =
+        document.createElement("div");
+
+
+    loadingBox.id =
+        "gtuResourceList";
+
+
+    loadingBox.innerHTML = `
+
+        <div class="gtu-overlay">
+
+            <div class="gtu-popup">
+
+                <button
+                    class="gtu-close"
+                    onclick="
+                        document
+                        .getElementById(
+                            'gtuResourceList'
+                        )
+                        .remove()
+                    "
+                >
+                    ×
+                </button>
+
+                <div class="gtu-icon">
+                    📚
+                </div>
+
+                <h2>
+                    ${name} Resources
+                </h2>
+
+                <p class="gtu-selected">
+                    ${branch} • ${sem}
+                </p>
+
+                <p style="color:#9da7bd;">
+                    Loading resources...
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        loadingBox
+    );
+
+
+    /* Fetch API */
+
+    fetch(API_URL)
+
+        .then(function(response){
+
+            if(!response.ok){
+
+                throw new Error(
+                    "API request failed"
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(function(data){
+
+            const matches =
+                data.filter(
+                    function(resource){
+
+                        return (
+
+                            String(
+                     .card{
 background:#101625;
 border:1px solid #242e47;
 border-radius:18px;
