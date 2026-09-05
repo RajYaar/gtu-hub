@@ -379,7 +379,7 @@ function openResource(name, branch, sem) {
     branch = branch || document.getElementById("branch")?.value || "Computer Engineering";
 sem = sem || document.getElementById("semester")?.value || "Semester 1";
 
-    const API_URL = "https://script.google.com/macros/s/AKfycbyWZ-IO31cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPwhvpUwlwpgA9IpMMmy7kQX5/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbyWZ-1031cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPWhvpUwlwpgA9IpMMmy7kQX5/exec";
 
     const typemap = {
     "Assignments": "Assignment",
@@ -516,7 +516,7 @@ function searchResources() {
         return;
     }
 
-    const API_URL = "https://script.google.com/macros/s/AKfycbyWZ-IO31cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPwhvpUwlwpgA9IpMMmy7kQX5/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbyWZ-1031cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPWhvpUwlwpgA9IpMMmy7kQX5/exec";
 
     fetch(API_URL)
         .then(response => response.json())
@@ -1363,213 +1363,119 @@ function openResource(name) {
             document.body.appendChild(box);
 
         })
+if (matches.length === 0) {
 
-        .catch(function(error) {
+    results = `
+        <p style="margin-top:20px;">
+            No resources found for <b>${input.value}</b>.
+        </p>
+    `;
 
-            console.error(error);
+} else {
 
-            alert("Unable to load resources. Please try again.");
+    results = matches.map(function(resource, index) {
 
-        });
+        return `
+            <a
+                href="${resource.file}"
+                target="_blank"
+                style="
+                    display:block;
+                    margin:10px 0;
+                    padding:12px 16px;
+                    background:#667eea;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:600;
+                "
+            >
+                📄 ${resource.subject || "Resource"} —
+                ${resource.type}
+                <br>
+                <small>
+                    ${resource.branch} • ${resource.semester}
+                </small>
+                <br>
+                <span style="font-size:13px;">
+                    Open Resource →
+                </span>
+            </a>
+        `;
 
+    }).join("");
 }
 
 
-/* SEARCH */
+const searchResults = document.createElement("div");
 
-function searchResources() {
+searchResults.id = "gtuSearchResults";
 
-    const input = document.getElementById("searchBox");
+searchResults.innerHTML = `
+    <div class="gtu-overlay">
 
-    if (!input) return;
+        <div class="gtu-popup">
 
-    const query = input.value.trim().toLowerCase();
+            <button
+                class="gtu-close"
+                onclick="
+                    document
+                    .getElementById('gtuSearchResults')
+                    .remove()
+                "
+            >
+                ×
+            </button>
 
-    if (!query) {
+            <div class="gtu-icon">
+                🔎
+            </div>
 
-        alert("Please type something to search.");
+            <h2>Search Results</h2>
 
-        return;
-    }
+            <p class="gtu-selected">
+                Results for "${input.value}"
+            </p>
 
+            <div style="margin-top:20px;">
+                ${results}
+            </div>
 
-    fetch(API_URL)
+            <button
+                onclick="
+                    window.open(
+                        'https://forms.gle/493aiSTtKXrUL5st9',
+                        '_blank'
+                    )
+                "
+                style="
+                    margin-top:15px;
+                    padding:12px 20px;
+                    border:none;
+                    border-radius:10px;
+                    cursor:pointer;
+                    font-weight:600;
+                "
+            >
+                ⬆️ Upload Resource
+            </button>
 
-        .then(function(response) {
-            return response.json();
-        })
+        </div>
 
-        .then(function(data) {
-
-            const matches = data.filter(function(resource) {
-
-                const text = `
-                    ${resource.branch || ""}
-                    ${resource.semester || ""}
-                    ${resource.subject || ""}
-                    ${resource.type || ""}
-                `.toLowerCase();
-
-                return text.includes(query);
-
-            });
-
-
-            let results = "";
-
-            if (matches.length === 0) {
-
-                results = `
-                    <p style="margin-top:20px;">
-                        No resources found for "${input.value}".
-                    </p>
-                `;
-
-            } else {
-
-                results = matches.map(function(resource) {
-
-                    return `
-                        <a
-                            href="${resource.file}"
-                            target="_blank"
-                            style="
-                                display:block;
-                                margin:10px 0;
-                                padding:14px 16px;
-                                background:#667eea;
-                                color:white;
-                                text-decoration:none;
-                                border-radius:12px;
-                                font-weight:600;
-                            "
-                        >
-                            📄 ${resource.subject || "Resource"} —
-                            ${resource.type}
-
-                            <br>
-
-                            <small>
-                                ${resource.branch} • ${resource.semester}
-                            </small>
-
-                            <br>
-
-                            <span style="font-size:13px;">
-                                Open Resource →
-                            </span>
-                        </a>
-                    `;
-
-                }).join("");
-
-            }
-
-
-            const box = document.createElement("div");
-
-            box.id = "gtuSearchResults";
-
-            box.innerHTML = `
-
-                <div class="gtu-overlay">
-
-                    <div class="gtu-popup">
-
-                        <button
-                            class="gtu-close"
-                            onclick="document.getElementById('gtuSearchResults').remove()"
-                        >
-                            ×
-                        </button>
-
-                        <div class="gtu-icon">🔎</div>
-
-                        <h2>Search Results</h2>
-
-                        <p class="gtu-selected">
-                            Results for "${input.value}"
-                        </p>
-
-                        <div style="margin-top:20px;">
-                            ${results}
-                        </div>
-
-                    </div>
-
-                </div>
-            `;
-
-            document.body.appendChild(box);
-
-        })
-
-        .catch(function(error) {
-
-            console.error(error);
-
-            alert("Unable to search resources. Please try again.");
-
-        });
-
-}
-
-
-/* POPUP CSS */
-
-const gtuStyle = document.createElement("style");
-
-gtuStyle.innerHTML = `
-
-.gtu-overlay {
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.7);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    padding:20px;
-}
-
-.gtu-popup {
-    position:relative;
-    width:100%;
-    max-width:450px;
-    max-height:85vh;
-    overflow:auto;
-    background:#111827;
-    border:1px solid #34416b;
-    border-radius:24px;
-    padding:30px 20px;
-    text-align:center;
-    box-shadow:0 20px 60px rgba(0,0,0,.6);
-}
-
-.gtu-close {
-    position:absolute;
-    right:15px;
-    top:10px;
-    background:transparent;
-    border:none;
-    color:white;
-    font-size:32px;
-    cursor:pointer;
-}
-
-.gtu-icon {
-    font-size:45px;
-}
-
-.gtu-selected {
-    color:#8da5ff;
-    font-weight:bold;
-}
-
+    </div>
 `;
 
-document.head.appendChild(gtuStyle);
+document.body.appendChild(searchResults);
 
-</script>
-</body>
-</html>
+})
+.catch(function(error) {
+
+    console.error(error);
+
+    alert(
+        "Unable to search resources. Please try again."
+    );
+
+});
+
+}
