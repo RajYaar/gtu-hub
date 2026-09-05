@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTU HUB — Your Semester, One Place</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#080b14;color:#fff;min-height:100vh}
+.container{max-width:1100px;margin:auto;padding:20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:15px 0}
+.logo{font-size:25px;font-weight:800}.logo span{color:#6c8cff}
+.navbtn{background:#151b2d;border:1px solid #29324d;color:white;padding:10px 15px;border-radius:12px;cursor:pointer}
+.hero{text-align:center;padding:65px 15px 40px}
+.badge{display:inline-block;background:#151d38;border:1px solid #2b3d73;color:#8da8ff;padding:8px 14px;border-radius:30px;font-size:13px;margin-bottom:20px}
+h1{font-size:clamp(40px,8vw,72px);line-height:1;margin-bottom:18px}
+.gradient{background:linear-gradient(90deg,#6d8cff,#b27cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:#9da7bd;font-size:17px;max-width:600px;margin:auto;line-height:1.6}
+.search{margin:30px auto;max-width:650px;display:flex;background:#111727;border:1px solid #29334e;border-radius:16px;padding:6px}
+.search input{flex:1;background:none;border:0;outline:0;color:white;padding:14px;font-size:15px}
+.search button{border:0;background:#6c8cff;color:white;padding:12px 20px;border-radius:11px;font-weight:bold;cursor:pointer}
+.section-title{margin:35px 0 18px;font-size:23px}
+.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+select{width:100%;padding:15px;background:#111727;border:1px solid #29334e;border-radius:13px;color:white;font-size:15px;outline:none}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.card{background:#101625;border:1px solid #242e47;border-radius:18px;padding:22px;transition:.2s;cursor:pointer}
+.card:hover{transform:translateY(-3px);border-color:#6179d9}
+.icon{font-size:30px;margin-bottom:12px}.card h3{margin-bottom:7px}
+.card p{color:#8f99af;font-size:13px;line-height:1.5}
+.subjects{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.subject{background:#101625;border:1px solid #242e47;padding:18px;border-radius:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:.2s}
+.subject:hover{border-color:#6179d9;transform:translateY(-2px)}
+.subject small{color:#818ca5}
+.ai{margin:35px 0;padding:30px;border-radius:22px;background:linear-gradient(135deg,#151d39,#21172f);border:1px solid #343d68}
+.ai h2{margin-bottom:10px}.ai p{color:#a4acc0;line-height:1.6;margin-bottom:18px}
+.ai button{background:#fff;color:#111;border:0;padding:13px 20px;border-radius:12px;font-weight:bold;cursor:pointer}
+footer{text-align:center;padding:40px 10px;color:#68738c;font-size:13px}
+.gtu-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;padding:20px;z-index:9999}
+.gtu-popup{width:100%;max-width:550px;max-height:85vh;overflow:auto;background:#101625;border:1px solid #354263;border-radius:22px;padding:28px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.gtu-close{position:absolute;right:15px;top:12px;width:38px;height:38px;border:0;border-radius:50%;background:#202a40;color:white;font-size:25px;cursor:pointer}
+.gtu-icon{font-size:42px;margin-bottom:10px}.gtu-popup h2{margin-bottom:8px}.gtu-selected{color:#8f9ab3;margin-bottom:20px}
+.resource-link{display:block;margin:10px 0;padding:13px 16px;background:#667eea;color:white;text-decoration:none;border-radius:11px;font-weight:600}
+.upload-btn{display:block;margin-top:18px;padding:13px 20px;background:white;color:#111;border:0;border-radius:11px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center}
+.no-results{color:#9da7bd;padding:20px 0;line-height:1.6}
+@media(max-width:700px){.container{padding:15px}.hero{padding-top:45px}.filters{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.subjects{grid-template-columns:1fr}h1{font-size:48px}}
+@media(max-width:430px){.cards{grid-template-columns:1fr 1fr}.card{padding:17px}}
+</style>
+</head>
+<body>
+<div class="container">
+<nav><div class="logo">GTU<span>HUB</span></div><button class="navbtn" onclick="openUpload()">＋ Upload</button></nav>
+<section class="hero">
+<div class="badge">🎓 Made for GTU Students</div>
+<h1>Your Semester.<br><span class="gradient">One Place.</span></h1>
+<p>Assignments, notes, previous papers, practicals and AI study tools — organized for your GTU journey.</p>
+<div class="search"><input id="searchBox" type="text" placeholder="Search assignments, subjects, notes..." onkeydown="if(event.key==='Enter'){searchResources();}"><button onclick="searchResources()">Search</button></div>
+</section>
+<h2 class="section-title">Choose Your Semester</h2>
+<div class="filters">
+<select id="branch" onchange="loadSubjects()"><option value="CSE">CSE</option><option value="CSE-DS">CSE-DS</option><option value="CSE-AIML">CSE-AIML</option></select>
+<select id="semester" onchange="loadSubjects()"><option value="Semester 1">Semester 1</option><option value="Semester 2">Semester 2</option><option value="Semester 3">Semester 3</option><option value="Semester 4">Semester 4</option><option value="Semester 5">Semester 5</option><option value="Semester 6">Semester 6</option><option value="Semester 7">Semester 7</option><option value="Semester 8">Semester 8</option></select>
+<select id="subject"><option value="">All Subjects</option></select>
+</div>
+<h2 class="section-title">Study Resources</h2>
+<div class="cards">
+<div class="card" onclick="openResource('Assignments')"><div class="icon">📝</div><h3>Assignments</h3><p>Find semester assignments in one organized place.</p></div>
+<div class="card" onclick="openResource('Notes')"><div class="icon">📚</div><h3>Notes</h3><p>Subject-wise notes and study material.</p></div>
+<div class="card" onclick="openResource('Previous Papers')"><div class="icon">📄</div><h3>PYQs</h3><p>Previous year question papers and exam material.</p></div>
+<div class="card" onclick="openResource('Practicals')"><div class="icon">💻</div><h3>Practicals</h3><p>Practical files, programs and useful resources.</p></div>
+</div>
+<h2 class="section-title">Subjects</h2>
+<div class="subjects">
+<div class="subject" onclick="selectSubject('DBMS')"><div><strong>Database Management System</strong><br><small>DBMS</small></div><span>→</span></div>
+<div class="subject" onclick="selectSubject('OS')"><div><strong>Operating System</strong><br><small>OS</small></div><span>→</span></div>
+<div class="subject" onclick="selectSubject('CN')"><div><strong>Computer Networks</strong><br><small>CN</small></div><span>→</span></div>
+<div class="subject" onclick="selectSubject('WD')"><div><strong>Web Development</strong><br><small>WD</small></div><span>→</span></div>
+</div>
+<section class="ai"><h2>🤖 GTU AI</h2><p>Your future AI study assistant. Ask questions, explain difficult topics, generate quizzes, summarize notes and prepare for exams.</p><button onclick="gtuMessage('GTU AI')">Try GTU AI →</button></section>
+<footer>GTU HUB © 2026 · Built for students, by students.</footer>
+</div>
+
+<script>
+"use strict";
+const API_URL="https://script.google.com/macros/s/AKfycbyWZ-1031cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPWhvpUwlwpgA9IpMMmy7kQX5/exec";
+const UPLOAD_URL="https://forms.gle/493aiSTtKXrUL5st9";
+
+const subjectsBySemester={
+"Semester 1":["Mathematics-1","Engineering Graphics & Design","Universal Human Values","BE","Physics"],
+"Semester 2":["Mathematics-2","Basic Electrical Engineering","Basic Mechanical Engineering","Programming for Problem Solving","English for Technical Communication","Fundamental of AI"],
+"Semester 3":["DS","PS","PCE","DF","DBMS","I.C"],
+"Semester 4":[],"Semester 5":[],"Semester 6":[],"Semester 7":[],"Semester 8":[]
+};
+
+const typeMap={"Assignments":"Assignment","Notes":"Notes","Previous Papers":"Previous Year","PYQ":"Previous Year","PYQs":"Previous Year","Previous Year":"Previous Year","Practicals":"Practical","Question Bank":"Question Bank"};
+
+function loadSubjects(){
+const semesterSelect=document.getElementById("semester");
+const subjectSelect=document.getElementById("subject");
+if(!semesterSelect||!subjectSelect)return;
+const subjects=subjectsBySemester[semesterSelect.value]||[];
+subjectSelect.innerHTML='<option value="">All Subjects</option>';
+subjects.forEach(function(subject){
+const option=document.createElement("option");
+option.value=subject;option.textContent=subject;subjectSelect.appendChild(option);
+});
+}
+
+function openUpload(){window.open(UPLOAD_URL,"_blank");}
+function gtuMessage(message){alert(message+" is coming soon to GTUHUB!");}
+
+function removePopup(){
+const oldPopup=document.getElementById("gtuResourceList");
+if(oldPopup)oldPopup.remove();
+}
+
+function showLoadingPopup(name,branch,semester){
+removePopup();
+const box=document.createElement("div");box.id="gtuResourceList";
+box.innerHTML='<div class="gtu-overlay"><div class="gtu-popup"><button class="gtu-close" onclick="removePopup()">×</button><div class="gtu-icon">📚</div><h2>'+name+' Resources</h2><p class="gtu-selected">'+branch+' • '+semester+'</p><p class="no-results">Loading resources...</p></div></div>';
+document.body.appendChild(box);
+}
+
+function showErrorPopup(){
+removePopup();
+const box=document.createElement("div");box.id="gtuResourceList";
+box.innerHTML='<div class="gtu-overlay"><div class="gtu-popup"><button class="gtu-close" onclick="removePopup()">×</button><div class="gtu-icon">⚠️</div><h2>Unable to Load Resources</h2><p class="no-results">The resource server could not be reached right now.<br><br>Please try again in a moment.</p></div></div>';
+document.body.appendChild(box);
+}
+
+function showResourcePopup(name,branch,semester,subject,matches){
+removePopup();
+let content="";
+if(matches.length===0){
+content='<div class="no-results"><strong>No resources found yet.</strong><br><br>Try another subject or resource type, or upload the first resource for this selection.</div>';
+}else{
+content=matches.map(function(resource){
+return '<a class="resource-link" href="'+(resource.file||"#")+'" target="_blank" rel="noopener noreferrer">📄 '+(resource.subject||name)+' — '+(resource.type||"Resource")+'</a>';
+}).join("");
+}
+const box=document.createElement("div");box.id="gtuResourceList";
+box.innerHTML='<div class="gtu-overlay"><div class="gtu-popup"><button class="gtu-close" onclick="removePopup()">×</button><div class="gtu-icon">📚</div><h2>'+name+' Resources</h2><p class="gtu-selected">'+branch+' • '+semester+(subject?" • "+subject:"")+'</p><div>'+content+'<a class="upload-btn" href="'+UPLOAD_URL+'" target="_blank" rel="noopener noreferrer">⬆️ Upload Resource</a></div></div></div>';
+document.body.appendChild(box);
+}
+
+function openResource(name){
+const branch=document.getElementById("branch").value;
+const semester=document.getElementById("semester").value;
+const subject=document.getElementById("subject").value;
+const selectedType=typeMap[name]||name;
+showLoadingPopup(name,branch,semester);
+fetch(API_URL)
+.then(function(response){if(!response.ok)throw new Error("API request failed");return response.json();})
+.then(function(data){
+const matches=(Array.isArray(data)?data:[]).filter(function(resource){
+return resource.branch===branch&&resource.semester===semester&&resource.type===selectedType&&(!subject||resource.subject===subject);
+});
+showResourcePopup(name,branch,semester,subject,matches);
+})
+.catch(function(error){console.error(error);showErrorPopup();});
+}
+
+function showSearchLoading(){
+removePopup();
+const box=document.createElement("div");box.id="gtuResourceList";
+box.innerHTML='<div class="gtu-overlay"><div class="gtu-popup"><button class="gtu-close" onclick="removePopup()">×</button><div class="gtu-icon">🔎</div><h2>Searching GTUHUB</h2><p class="no-results">Searching your resources...</p></div></div>';
+document.body.appendChild(box);
+}
+
+function searchResources(){
+const input=document.getElementById("searchBox");
+const query=input.value.trim().toLowerCase();
+if(!query){alert("Please type something to search.");return;}
+showSearchLoading();
+fetch(API_URL)
+.then(function(response){if(!response.ok)throw new Error("Search API failed");return response.json();})
+.then(function(data){
+const matches=(Array.isArray(data)?data:[]).filter(function(resource){
+const text=((resource.branch||"")+" "+(resource.semester||"")+" "+(resource.subject||"")+" "+(resource.type||"")).toLowerCase();
+return text.includes(query);
+});
+showSearchResults(query,matches);
+})
+.catch(function(error){console.error(error);showErrorPopup();});
+}
+
+function showSearchResults(query,matches){
+removePopup();
+let content="";
+if(matches.length===0){
+content='<div class="no-results">No resources found for: <strong>"'+query+'"</strong><br><br>Try searching for a subject, semester, or resource type.</div>';
+}else{
+content=matches.map(function(resource){
+return '<a class="resource-link" href="'+(resource.file||"#")+'" target="_blank" rel="noopener noreferrer">📄 '+(resource.subject||"Resource")+' — '+(resource.type||"File")+'</a>';
+}).join("");
+}
+const box=document.createElement("div");box.id="gtuResourceList";
+box.innerHTML='<div class="gtu-overlay"><div class="gtu-popup"><button class="gtu-close" onclick="removePopup()">×</button><div class="gtu-icon">🔎</div><h2>Search Results</h2><p class="gtu-selected">Results for "'+query+'"</p><div>'+content+'</div></div></div>';
+document.body.appendChild(box);
+}
+
+function selectSubject(subject){
+const subjectSelect=document.getElementById("subject");
+let found=false;
+for(let i=0;i<subjectSelect.options.length;i++){
+if(subjectSelect.options[i].value.toLowerCase()===subject.toLowerCase()){
+subjectSelect.selectedIndex=i;found=true;break;
+}}
+if(found){openResource("Notes");}
+else{alert("This subject is not available for the selected semester.");}
+}
+
+document.addEventListener("DOMContentLoaded",function(){loadSubjects();});
+</script>
+</body>
+</html>
