@@ -324,7 +324,7 @@ function gtuMessage(message) {
     alert(message + " is coming soon to GTUHUB!");
 }
 function loadSubjects() {
-    const branch = document.getElementById("branch").value;
+function loadSubjects() {
     const semester = document.getElementById("semester").value;
     const subjectSelect = document.getElementById("subject");
 
@@ -358,7 +358,8 @@ function loadSubjects() {
         ]
     };
 
-    subjectSelect.innerHTML = '<option value="">All Subjects</option>';
+    subjectSelect.innerHTML =
+        '<option value="">All Subjects</option>';
 
     const subjects = subjectsBySemester[semester] || [];
 
@@ -368,8 +369,7 @@ function loadSubjects() {
         option.textContent = subject;
         subjectSelect.appendChild(option);
     });
-}
-
+            }
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("branch").addEventListener("change", loadSubjects);
     document.getElementById("semester").addEventListener("change", loadSubjects);
