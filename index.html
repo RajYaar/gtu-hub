@@ -323,7 +323,7 @@ GTU HUB © 2026 · Built for students, by students.
 function gtuMessage(message) {
     alert(message + " is coming soon to GTUHUB!");
 }
-function loadSubjects() {
+
 function loadSubjects() {
     const semester = document.getElementById("semester").value;
     const subjectSelect = document.getElementById("subject");
@@ -539,71 +539,479 @@ function searchResources() {
 
                 results = `
                     <p style="margin-top:20px;">
-                        No resources found for "<b>${input.value}</b>".
+<script>
+
+function gtuMessage(message) {
+    alert(message + " is coming soon to GTUHUB!");
+}
+
+
+/* =========================
+   SUBJECT DROPDOWN
+========================= */
+
+function loadSubjects() {
+
+    const semesterSelect = document.getElementById("semester");
+    const subjectSelect = document.getElementById("subject");
+
+    if (!semesterSelect || !subjectSelect) return;
+
+    const semester = semesterSelect.value;
+
+    const subjectsBySemester = {
+
+        "Semester 1": [
+            "Mathematics-1",
+            "Engineering Graphics & Design",
+            "Universal Human Values",
+            "BE",
+            "Physics"
+        ],
+
+        "Semester 2": [
+            "Mathematics-2",
+            "Basic Electrical Engineering",
+            "Basic Mechanical Engineering",
+            "Programming for Problem Solving",
+            "English for Technical Communication",
+            "Fundamental of AI"
+        ],
+
+        "Semester 3": [
+            "DS",
+            "PS",
+            "PCE",
+            "DF",
+            "DBMS",
+            "I.C"
+        ],
+
+        "Semester 4": [],
+        "Semester 5": [],
+        "Semester 6": [],
+        "Semester 7": [],
+        "Semester 8": []
+    };
+
+    subjectSelect.innerHTML =
+        '<option value="">All Subjects</option>';
+
+    const subjects = subjectsBySemester[semester] || [];
+
+    subjects.forEach(function(subject) {
+
+        const option = document.createElement("option");
+
+        option.value = subject;
+        option.textContent = subject;
+
+        subjectSelect.appendChild(option);
+    });
+}
+
+
+/* =========================
+   PAGE START
+========================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const branch = document.getElementById("branch");
+    const semester = document.getElementById("semester");
+
+    if (branch) {
+        branch.addEventListener("change", loadSubjects);
+    }
+
+    if (semester) {
+        semester.addEventListener("change", loadSubjects);
+    }
+
+    loadSubjects();
+
+});
+
+
+/* =========================
+   OPEN RESOURCE
+========================= */
+
+function openResource(name, branch, sem) {
+
+    branch =
+        branch ||
+        document.getElementById("branch")?.value ||
+        "CSE";
+
+    sem =
+        sem ||
+        document.getElementById("semester")?.value ||
+        "Semester 1";
+
+
+    const API_URL =
+        "https://script.google.com/macros/s/AKfycbyWZ-1031cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPWhvpUwlwpgA9IpMMmy7kQX5/exec";
+
+
+    const typemap = {
+
+        "Assignments": "Assignment",
+
+        "Notes": "Notes",
+
+        "PYQ": "Previous Year",
+
+        "PYQs": "Previous Year",
+
+        "Previous Papers": "Previous Year",
+
+        "Previous Year Paper (PYQ)": "Previous Year",
+
+        "Practicals": "Practical",
+
+        "Question Bank": "Question Bank"
+    };
+
+
+    const branchMap = {
+
+        "Computer Engineering": "CSE",
+
+        "CSE": "CSE",
+
+        "CSE-AIML": "CSE-AIML",
+
+        "CSE-DS": "CSE-DS"
+    };
+
+
+    const selectedBranch =
+        branchMap[branch] || branch;
+
+    const selectedType =
+        typemap[name] || name;
+
+    const selectedSubject =
+        document.getElementById("subject")?.value || "";
+
+
+    fetch(API_URL)
+
+        .then(function(response) {
+
+            if (!response.ok) {
+                throw new Error("API request failed");
+            }
+
+            return response.json();
+        })
+
+        .then(function(data) {
+
+            const matches = data.filter(function(resource) {
+
+                return (
+                    resource.branch === selectedBranch &&
+                    resource.semester === sem &&
+                    resource.type === selectedType &&
+                    (
+                        !selectedSubject ||
+                        resource.subject === selectedSubject
+                    )
+                );
+
+            });
+
+
+            let resourceLinks = "";
+
+
+            if (matches.length === 0) {
+
+                resourceLinks = `
+                    <p style="margin-top:20px;">
+                        No resources found for this selection.
                     </p>
                 `;
 
             } else {
 
-                results = matches.map((resource, index) => `
-                    <a
-                        href="${resource.file}"
-                        target="_blank"
-                        style="
-                            display:block;
-                            margin:10px 0;
-                            padding:14px 16px;
-                            background:#667eea;
-                            color:white;
-                            text-decoration:none;
-                            border-radius:12px;
-                            font-weight:600;
-                        "
-                    >
-                        📄 ${resource.subject || "Resource"} — ${resource.type}
-                        <br>
-                        <small>
-                            ${resource.branch} • ${resource.semester}
-                        </small>
-                        <br>
-                        <span style="font-size:13px;">
-                            Open Resource →
-                        </span>
-                    </a>
-                `).join("");
+                resourceLinks = matches.map(function(resource, index) {
 
+                    return `
+                        <a
+                            href="${resource.file}"
+                            target="_blank"
+                            style="
+                                display:block;
+                                margin:10px 0;
+                                padding:12px 16px;
+                                background:#667eea;
+                                color:white;
+                                text-decoration:none;
+                                border-radius:10px;
+                                font-weight:600;
+                            "
+                        >
+                            📄 ${name} ${index + 1} — Open Resource
+                        </a>
+                    `;
+
+                }).join("");
             }
 
-            const searchBox = document.createElement("div");
 
-            searchBox.id = "gtuSearchResults";
+            const resourceBox =
+                document.createElement("div");
 
-            searchBox.innerHTML = `
+            resourceBox.id =
+                "gtuResourceList";
+
+
+            resourceBox.innerHTML = `
+
                 <div class="gtu-overlay">
 
                     <div class="gtu-popup">
 
                         <button
                             class="gtu-close"
-                            onclick="document.getElementById('gtuSearchResults').remove()"
+                            onclick="
+                                document
+                                .getElementById('gtuResourceList')
+                                .remove()
+                            "
                         >
                             ×
                         </button>
 
-                        <div class="gtu-icon">🔎</div>
+                        <div class="gtu-icon">
+                            📚
+                        </div>
 
-                        <h2>Search Results</h2>
+                        <h2>
+                            ${name} Resources
+                        </h2>
+
+                        <p class="gtu-selected">
+                            ${branch} • ${sem}
+                        </p>
+
+                        <div>
+
+                            ${resourceLinks}
+
+                            <button
+                                onclick="
+                                    window.open(
+                                        'https://forms.gle/493aiSTtKXrUL5st9',
+                                        '_blank'
+                                    )
+                                "
+                                style="
+                                    margin-top:15px;
+                                    padding:12px 20px;
+                                    border:none;
+                                    border-radius:10px;
+                                    cursor:pointer;
+                                    font-weight:600;
+                                "
+                            >
+                                ⬆️ Upload Resource
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+
+            document.body.appendChild(resourceBox);
+
+        })
+
+        .catch(function(error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to load resources. Please try again."
+            );
+
+        });
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchResources() {
+
+    const input =
+        document.getElementById("searchBox");
+
+    if (!input) return;
+
+
+    const query =
+        input.value.trim().toLowerCase();
+
+
+    if (!query) {
+
+        alert(
+            "Please type something to search."
+        );
+
+        return;
+    }
+
+
+    const API_URL =
+        "https://script.google.com/macros/s/AKfycbyWZ-1031cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPWhvpUwlwpgA9IpMMmy7kQX5/exec";
+
+
+    fetch(API_URL)
+
+        .then(function(response) {
+            return response.json();
+        })
+
+        .then(function(data) {
+
+            const matches =
+                data.filter(function(resource) {
+
+                    const text = `
+
+                        ${resource.branch || ""}
+
+                        ${resource.semester || ""}
+
+                        ${resource.subject || ""}
+
+                        ${resource.type || ""}
+
+                    `.toLowerCase();
+
+
+                    return text.includes(query);
+                });
+
+
+            let results = "";
+
+
+            if (matches.length === 0) {
+
+                results = `
+                    <p style="margin-top:20px;">
+                        No resources found for
+                        "<b>${input.value}</b>".
+                    </p>
+                `;
+
+            } else {
+
+                results = matches.map(function(resource) {
+
+                    return `
+
+                        <a
+                            href="${resource.file}"
+                            target="_blank"
+                            style="
+                                display:block;
+                                margin:10px 0;
+                                padding:14px 16px;
+                                background:#667eea;
+                                color:white;
+                                text-decoration:none;
+                                border-radius:12px;
+                                font-weight:600;
+                            "
+                        >
+
+                            📄
+                            ${resource.subject || "Resource"}
+                            —
+                            ${resource.type}
+
+                            <br>
+
+                            <small>
+                                ${resource.branch}
+                                •
+                                ${resource.semester}
+                            </small>
+
+                            <br>
+
+                            <span style="font-size:13px;">
+                                Open Resource →
+                            </span>
+
+                        </a>
+
+                    `;
+
+                }).join("");
+            }
+
+
+            const searchResults =
+                document.createElement("div");
+
+            searchResults.id =
+                "gtuSearchResults";
+
+
+            searchResults.innerHTML = `
+
+                <div class="gtu-overlay">
+
+                    <div class="gtu-popup">
+
+                        <button
+                            class="gtu-close"
+                            onclick="
+                                document
+                                .getElementById('gtuSearchResults')
+                                .remove()
+                            "
+                        >
+                            ×
+                        </button>
+
+                        <div class="gtu-icon">
+                            🔎
+                        </div>
+
+                        <h2>
+                            Search Results
+                        </h2>
 
                         <p class="gtu-selected">
                             Results for "${input.value}"
                         </p>
 
                         <div style="margin-top:20px;">
+
                             ${results}
+
                         </div>
 
                         <button
-                            onclick="window.open('https://forms.gle/493aiSTtKXrUL5st9','_blank')"
+                            onclick="
+                                window.open(
+                                    'https://forms.gle/493aiSTtKXrUL5st9',
+                                    '_blank'
+                                )
+                            "
                             style="
                                 margin-top:15px;
                                 padding:12px 20px;
@@ -621,120 +1029,145 @@ function searchResources() {
                 </div>
             `;
 
-            document.body.appendChild(searchBox);
+
+            document.body.appendChild(searchResults);
 
         })
-        .catch(error => {
+
+        .catch(function(error) {
 
             console.error(error);
 
-            alert("Unable to search resources. Please try again.");
+            alert(
+                "Unable to search resources. Please try again."
+            );
 
         });
-}
 
-    const cards = document.querySelectorAll(".card");
-
-    let found = false;
-
-    cards.forEach(card => {
-
-        const text = card.innerText.toLowerCase();
-
-        if (text.includes(query)) {
-
-            card.style.outline = "2px solid #6c8cff";
-            card.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-
-            found = true;
-
-        } else {
-
-            card.style.outline = "";
-
-        }
-
-    });
-
-    if (!found) {
-        alert("No resource found for: " + input.value);
-    }
 }
 
 
-/* GTUHUB popup design */
+/* =========================
+   POPUP DESIGN
+========================= */
 
-const gtuStyle = document.createElement("style");
+const gtuStyle =
+    document.createElement("style");
+
 
 gtuStyle.innerHTML = `
 
 .gtu-overlay {
+
     position: fixed;
+
     inset: 0;
+
     background: rgba(0,0,0,0.7);
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     z-index: 9999;
+
     padding: 20px;
 }
 
+
 .gtu-popup {
+
     position: relative;
+
     width: 100%;
+
     max-width: 450px;
+
     background: #111827;
+
     border: 1px solid #34416b;
+
     border-radius: 24px;
+
     padding: 30px 20px;
+
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.6);
 }
+
 
 .gtu-close {
+
     position: absolute;
+
     right: 15px;
+
     top: 10px;
+
     background: transparent;
+
     border: none;
+
     color: white;
+
     font-size: 32px;
+
+    cursor: pointer;
 }
 
+
 .gtu-icon {
+
     font-size: 45px;
 }
 
+
 .gtu-selected {
+
     color: #8da5ff;
+
     font-weight: bold;
 }
 
+
 .gtu-buttons {
+
     display: flex;
+
     gap: 10px;
+
     justify-content: center;
+
     flex-wrap: wrap;
+
     margin-top: 20px;
 }
 
+
 .gtu-buttons button {
+
     border: none;
+
     border-radius: 12px;
+
     padding: 13px 18px;
+
     background: #6c8cff;
+
     color: white;
+
     font-weight: bold;
 }
 
 `;
 
+
 document.head.appendChild(gtuStyle);
 
 </script>
-
 </body>
 </html>
