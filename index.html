@@ -326,9 +326,14 @@ function gtuMessage(message) {
 function loadSubjects() {
     const API_URL = "https://script.google.com/macros/s/AKfycbyWZ-IO31cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPwhvpUwlwpgA9IpMMmy7kQX5/exec";
 
-    const branch = document.getElementById("branch").value;
-    const semester = document.getElementById("semester").value;
+    const branchSelect = document.getElementById("branch");
+    const semesterSelect = document.getElementById("semester");
     const subjectSelect = document.getElementById("subject");
+
+    if (!branchSelect || !semesterSelect || !subjectSelect) return;
+
+    const branch = branchSelect.value;
+    const semester = semesterSelect.value;
 
     subjectSelect.innerHTML = '<option value="">All Subjects</option>';
 
@@ -338,11 +343,11 @@ function loadSubjects() {
             const subjects = [...new Set(
                 data
                     .filter(resource =>
-                        resource.branch === branch &&
-                        resource.semester === semester &&
+                        String(resource.branch).trim() === String(branch).trim() &&
+                        String(resource.semester).trim() === String(semester).trim() &&
                         resource.subject
                     )
-                    .map(resource => resource.subject)
+                    .map(resource => String(resource.subject).trim())
             )];
 
             subjects.sort();
@@ -359,10 +364,11 @@ function loadSubjects() {
         });
 }
 
-document.getElementById("branch").addEventListener("change", loadSubjects);
-document.getElementById("semester").addEventListener("change", loadSubjects);
-
-loadSubjects();
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("branch").addEventListener("change", loadSubjects);
+    document.getElementById("semester").addEventListener("change", loadSubjects);
+    loadSubjects();
+});
 
 function openResource(name, branch, sem) {
     branch = branch || document.getElementById("branch")?.value || "Computer Engineering";
