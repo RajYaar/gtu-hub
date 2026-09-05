@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070d24">
+<title>NewLjHub — Your Semester, One Place</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root{
+  --bg:#050817;
+  --panel:rgba(13,20,48,.72);
+  --panel2:rgba(18,27,60,.78);
+  --line:rgba(255,255,255,.105);
+  --text:#f4f7ff;
+  --muted:#9aa8ca;
+  --soft:#cbd5f0;
+  --accent:#8b9cff;
+  --accent2:#c084fc;
+  --accent3:#67e8f9;
+  --shadow:0 24px 80px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:
+    radial-gradient(800px 500px at 5% -5%,rgba(86,105,255,.27),transparent 65%),
+    radial-gradient(700px 480px at 95% 8%,rgba(192,84,252,.20),transparent 65%),
+    radial-gradient(650px 520px at 50% 100%,rgba(41,194,255,.09),transparent 68%),
+    linear-gradient(145deg,#050817 0%,#080d22 48%,#07091a 100%);
+  overflow-x:hidden;
+}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-3;pointer-events:none;opacity:.22;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,black,transparent 85%);
+}
+body:after{
+  content:"";position:fixed;z-index:-2;width:460px;height:460px;right:-180px;top:28%;
+  border-radius:50%;background:rgba(122,92,255,.10);filter:blur(80px);pointer-events:none;
+}
+button,select,input,textarea{font:inherit}
+button{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+button:hover{transform:translateY(-1px)}
+.nav{
+  position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;
+  padding:15px max(4%,calc((100% - 1120px)/2));backdrop-filter:blur(22px);
+  background:rgba(5,8,23,.70);border-bottom:1px solid rgba(255,255,255,.07)
+}
+.logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.8px}
+.logo span{
+  background:linear-gradient(90deg,#9ba8ff,#d29cff);-webkit-background-clip:text;
+  background-clip:text;color:transparent
+}
+.navbtn,.primary{
+  border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:11px 16px;
+  font-weight:700;cursor:pointer;background:rgba(255,255,255,.94);color:#101426;
+  box-shadow:0 8px 25px rgba(0,0,0,.16)
+}
+.navbtn:hover,.primary:hover{box-shadow:0 10px 30px rgba(132,145,255,.20)}
+.container{width:min(1120px,92%);margin:auto}
+.hero{padding:82px 0 42px;text-align:center}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;
+  font-size:12px;font-weight:700;color:#dce4ff;background:rgba(139,156,255,.09);
+  border:1px solid rgba(160,173,255,.18);box-shadow:0 8px 35px rgba(85,98,220,.10)
+}
+.badge:before{content:"";width:7px;height:7px;border-radius:50%;background:#9ca9ff;box-shadow:0 0 14px #9ca9ff}
+h1{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,7vw,76px);line-height:.98;
+  margin:21px 0 17px;letter-spacing:-3.5px
+}
+.gradient{
+  background:linear-gradient(100deg,#ffffff 10%,#aeb8ff 50%,#dda9ff 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero p{max-width:700px;margin:0 auto;color:#aab6d4;font-size:16px;line-height:1.75}
+.searchbox{
+  margin:30px auto 0;display:flex;gap:8px;max-width:770px;padding:7px;
+  border-radius:17px;background:rgba(10,16,40,.70);border:1px solid rgba(255,255,255,.11);
+  box-shadow:var(--shadow);backdrop-filter:blur(16px)
+}
+.searchbox input{
+  flex:1;min-width:0;border:0;outline:0;background:transparent;color:#fff;padding:14px;
+  font-size:14px
+}
+.searchbox input::placeholder{color:#7381a5}
+.searchbox button{
+  border:0;border-radius:12px;padding:12px 20px;font-weight:700;cursor:pointer;
+  background:linear-gradient(135deg,#eef1ff,#dfe4ff);color:#11162a
+}
+.panel{
+  padding:20px;border-radius:23px;background:var(--panel);border:1px solid var(--line);
+  box-shadow:var(--shadow);backdrop-filter:blur(18px)
+}
+.filters{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:11px}
+select{
+  width:100%;padding:14px 15px;border-radius:13px;border:1px solid rgba(255,255,255,.11);
+  background:rgba(8,14,35,.86);color:#eef2ff;outline:0;cursor:pointer
+}
+select:focus{border-color:rgba(145,159,255,.55);box-shadow:0 0 0 3px rgba(120,135,255,.08)}
+.status{margin-top:10px;font-size:12px;color:#8f9dbd}
+.section{padding:38px 0}
+.section-title{
+  font-family:'Space Grotesk',sans-serif;font-size:24px;letter-spacing:-.7px;margin:0 0 17px
+}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.card{
+  position:relative;overflow:hidden;padding:21px;border-radius:19px;
+  background:linear-gradient(145deg,rgba(20,29,66,.78),rgba(10,16,39,.72));
+  border:1px solid rgba(255,255,255,.085);cursor:pointer;transition:all .22s ease;min-height:145px
+}
+.card:before{
+  content:"";position:absolute;width:130px;height:130px;right:-65px;top:-70px;border-radius:50%;
+  background:rgba(139,156,255,.08);filter:blur(3px)
+}
+.card:hover{
+  transform:translateY(-5px);border-color:rgba(159,173,255,.32);
+  box-shadow:0 18px 45px rgba(0,0,0,.25)
+}
+.icon{font-size:27px;margin-bottom:12px;filter:saturate(.9)}
+.card h3{font-family:'Space Grotesk',sans-serif;margin:0 0 7px;letter-spacing:-.3px}
+.muted{color:#9ba9c9;font-size:13px;line-height:1.6}
+.ai{
+  position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;
+  gap:20px;padding:28px;border-radius:23px;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(211,136,255,.18),transparent 38%),
+    linear-gradient(135deg,rgba(74,84,202,.23),rgba(104,48,154,.13));
+  border:1px solid rgba(174,177,255,.17);box-shadow:var(--shadow)
+}
+.ai:before{
+  content:"";position:absolute;width:240px;height:240px;left:-120px;bottom:-160px;
+  border-radius:50%;background:rgba(103,232,249,.09);filter:blur(35px)
+}
+.ai h2{font-family:'Space Grotesk',sans-serif;letter-spacing:-.6px}
+footer{padding:38px 0 48px;text-align:center;color:#6f7d9e;font-size:12px}
+.modal{
+  position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(1,4,15,.80);backdrop-filter:blur(14px)
+}
+.modal.show{display:flex}
+.modalbox{
+  width:min(720px,100%);max-height:88vh;overflow:auto;border-radius:25px;
+  background:linear-gradient(145deg,#111a3b,#0b122c);border:1px solid rgba(255,255,255,.12);
+  padding:24px;box-shadow:0 35px 110px rgba(0,0,0,.58)
+}
+.modalhead{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.close{
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.065);color:#fff;
+  border-radius:10px;padding:8px 11px;cursor:pointer
+}
+.modal h2{font-family:'Space Grotesk',sans-serif;margin:0 0 6px;letter-spacing:-.6px}
+.modal-sub{color:#93a2c4;font-size:13px}
+.resource-list{display:grid;gap:10px;margin-top:18px}
+.resource{
+  padding:15px;border-radius:15px;background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08)
+}
+.resource-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.resource a{
+  display:inline-block;margin-top:10px;text-decoration:none;background:#f1f3ff;color:#11162a;
+  padding:8px 12px;border-radius:9px;font-size:12px;font-weight:800
+}
+.no-results{padding:22px;text-align:center;color:#98a6c7;line-height:1.7}
+.ai-input{
+  width:100%;margin-top:17px;min-height:125px;resize:vertical;padding:15px;border-radius:15px;
+  border:1px solid rgba(255,255,255,.10);background:#080f28;color:#fff;outline:0
+}
+.ai-input:focus{border-color:rgba(145,159,255,.48);box-shadow:0 0 0 3px rgba(120,135,255,.07)}
+.ai-actions{display:flex;gap:10px;margin-top:12px}
+.answer{
+  white-space:pre-wrap;margin-top:16px;padding:17px;border-radius:15px;
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06);
+  color:#dce5ff;line-height:1.7
+}
+.search-result{margin-top:12px}
+.pill{
+  font-size:11px;padding:5px 8px;border-radius:999px;background:rgba(139,156,255,.09);
+  border:1px solid rgba(139,156,255,.10);color:#b9c5e5
+}
+@media(max-width:760px){
+  .nav{padding:14px 4%}
+  .hero{padding:58px 0 35px}
+  .filters,.cards{grid-template-columns:1fr}
+  .ai{align-items:flex-start;flex-direction:column}
+  .ai button{width:100%}
+  .searchbox button{padding:11px 14px}
+  h1{letter-spacing:-2.5px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">NewLj<span>Hub</span></div>
+  <button class="navbtn" onclick="openUpload()">＋ Upload</button>
+</nav>
+
+<main class="container">
+  <section class="hero">
+    <div class="badge">Made for Students</div>
+    <h1>Your Semester. <span class="gradient">One Place.</span></h1>
+    <p>Assignments, notes, previous papers, practicals and AI study help — organized for your semester journey.</p>
+
+    <div class="searchbox">
+      <input id="searchBox" placeholder="Search assignments, notes, DBMS, database, PYQs..." onkeydown="if(event.key==='Enter')runSearch()">
+      <button onclick="runSearch()">Search</button>
+    </div>
+    <div id="searchResults" class="search-result"></div>
+  </section>
+
+  <section class="panel">
+    <div class="filters">
+      <select id="branch" onchange="loadSubjects()">
+        <option value="CSE">CSE</option>
+        <option value="CSE-DS">CSE-DS</option>
+        <option value="CSE-AIML">CSE-AIML</option>
+      </select>
+      <select id="semester" onchange="loadSubjects()">
+        <option value="Semester 1">Semester 1</option>
+        <option value="Semester 2">Semester 2</option>
+        <option value="Semester 3" selected>Semester 3</option>
+        <option value="Semester 4">Semester 4</option>
+        <option value="Semester 5">Semester 5</option>
+        <option value="Semester 6">Semester 6</option>
+        <option value="Semester 7">Semester 7</option>
+        <option value="Semester 8">Semester 8</option>
+      </select>
+      <select id="subject" onchange="renderSubjectCards()">
+        <option value="">All Subjects</option>
+      </select>
+    </div>
+    <div id="resourceStatus" class="status">Loading resources...</div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Study Resources</h2>
+    <div id="subjectCards" class="cards"></div>
+  </section>
+
+  <section class="section">
+    <div class="ai">
+      <div>
+        <h2 style="margin:0 0 7px">✨ NewLj AI</h2>
+        <div class="muted">Your built-in study assistant. Ask questions, simplify difficult topics and study from NewLjHub resources.</div>
+      </div>
+      <button class="primary" onclick="openAI()">Try NewLj AI →</button>
+    </div>
+  </section>
+</main>
+
+<footer>NewLjHub © 2026 · Built for students</footer>
+
+<div id="resourceModal" class="modal" onclick="if(event.target===this)closeModal('resourceModal')">
+  <div class="modalbox">
+    <div class="modalhead">
+      <div><h2 id="resourceTitle">Resources</h2><div id="resourceSub" class="modal-sub"></div></div>
+      <button class="close" onclick="closeModal('resourceModal')">✕</button>
+    </div>
+    <div id="resourceList" class="resource-list"></div>
+  </div>
+</div>
+
+<div id="aiModal" class="modal" onclick="if(event.target===this)closeModal('aiModal')">
+  <div class="modalbox">
+    <div class="modalhead">
+      <div><h2>✨ NewLj AI</h2><div class="modal-sub">Built into NewLjHub · Your study assistant</div></div>
+      <button class="close" onclick="closeModal('aiModal')">✕</button>
+    </div>
+    <textarea id="aiQuestion" class="ai-input" placeholder="Explain DBMS in simple words."></textarea>
+    <div class="ai-actions">
+      <button class="primary" onclick="askAI()">Ask NewLj AI</button>
+      <button class="close" onclick="document.getElementById('aiQuestion').value=''">Clear</button>
+    </div>
+    <div id="aiStatus" class="status"></div>
+    <div id="aiAnswer" class="answer" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* =========================
+   NEWLJHUB CONFIG
+   ========================= */
+const API_URL="https://script.google.com/macros/s/AKfycbx0BSNA3-TIYOYipMXA8wkUwBS3MGL7FiIfTcK_lzdLsehmfstjYwkcLtMafn4sqlD-4Q/exec";
+const AI_API_URL=API_URL;
+const UPLOAD_URL="https://forms.gle/493aiSTtKXrUL5st9";
+
+/* Subjects currently available in the hub. Add more whenever needed. */
+const subjectsBySemester={
+  "Semester 1":["Mathematics-1","Engineering Graphics & Design","Universal Human Values","BE","Physics"],
+  "Semester 2":["Mathematics-2","Basic Electrical Engineering","Basic Mechanical Engineering","Programming for Problem Solving","Engineering Chemistry"],
+  "Semester 3":["DS","PS","PCE","DF","DBMS","I.C"],
+  "Semester 4":[],
+  "Semester 5":[],
+  "Semester 6":[],
+  "Semester 7":[],
+  "Semester 8":[]
+};
+
+const typeMap={
+  "Assignments":"Assignment",
+  "Notes":"Notes",
+  "Previous Papers":"Previous Year",
+  "Practicals":"Practical",
+  "Question Banks":"Question Bank",
+  "Other":"Other"
+};
+
+const typeIcons={
+  "Assignments":"📝",
+  "Notes":"📚",
+  "Previous Papers":"📄",
+  "Practicals":"🧪",
+  "Question Banks":"❓",
+  "Other":"📦"
+};
+
+let resources=[];
+let resourcesLoaded=false;
+let loadingPromise=null;
+
+/* =========================
+   HELPERS
+   ========================= */
+function norm(v){
+  return String(v ?? "")
+    .toLowerCase()
+    .replace(/&/g,"and")
+    .replace(/[^a-z0-9]+/g," ")
+    .trim()
+    .replace(/\s+/g," ");
+}
+
+function compact(v){ return norm(v).replace(/\s/g,""); }
+
+function same(a,b){
+  return norm(a)===norm(b);
+}
+
+function typeEquivalent(a,b){
+  const x=norm(a), y=norm(b);
+  if(x===y) return true;
+  const aliases={
+    "assignment":["assignments"],
+    "assignments":["assignment"],
+    "previous year":["previous years","previous paper","previous papers","pyq","pyqs"],
+    "previous papers":["previous year","previous years","pyq","pyqs"],
+    "practical":["practicals"],
+    "practicals":["practical"],
+    "question bank":["question banks"],
+    "question banks":["question bank"]
+  };
+  return (aliases[x]||[]).includes(y);
+}
+
+function subjectEquivalent(a,b){
+  const x=compact(a), y=compact(b);
+  if(!x || !y) return true;
+  if(x===y) return true;
+  const aliases={
+    "dbm":"dbms",
+    "database":"dbms",
+    "databases":"dbms",
+    "data base":"dbms",
+    "programming":"ps",
+    "datastructure":"ds",
+    "datastructures":"ds"
+  };
+  return (aliases[x]||[]).includes(y) || (aliases[y]||[]).includes(x);
+}
+
+function escapeHTML(s){
+  return String(s ?? "").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+
+function openUpload(){window.open(UPLOAD_URL,"_blank")}
+
+/* =========================
+   LOAD RESOURCE FEED
+   ========================= */
+async function loadResources(force=false){
+  if(resourcesLoaded && !force) return resources;
+  if(loadingPromise && !force) return loadingPromise;
+
+  const status=document.getElementById("resourceStatus");
+  status.textContent="Loading resources...";
+
+  loadingPromise=(async()=>{
+    try{
+      const response=await fetch(API_URL+"?t="+Date.now(),{
+        method:"GET",
+        cache:"no-store"
+      });
+
+      if(!response.ok) throw new Error("HTTP "+response.status);
+
+      const text=await response.text();
+      let data;
+
+      try{
+        data=JSON.parse(text);
+      }catch(e){
+        throw new Error("API returned non-JSON data");
+      }
+
+      if(!Array.isArray(data)){
+        if(Array.isArray(data.resources)) data=data.resources;
+        else if(Array.isArray(data.data)) data=data.data;
+        else throw new Error("Resource Feed format not recognized");
+      }
+
+      resources=data.map(r=>({
+        branch:r.branch ?? r.Branch ?? "",
+        semester:r.semester ?? r.Semester ?? "",
+        type:r.type ?? r.resourceType ?? r["Resource Type"] ?? "",
+        file:r.file ?? r.url ?? r.link ?? r["Upload Resource File"] ?? "",
+        subject:r.subject ?? r.Subject ?? ""
+      })).filter(r=>r.file);
+
+      resourcesLoaded=true;
+      status.textContent=`✓ ${resources.length} resources loaded`;
+      renderSubjectCards();
+      return resources;
+    }catch(err){
+      console.error("NewLjHub resource error:",err);
+      status.textContent="Could not load resources. Tap reload or check the Apps Script deployment.";
+      resources=[];
+      resourcesLoaded=false;
+      renderSubjectCards();
+      throw err;
+    }finally{
+      loadingPromise=null;
+    }
+  })();
+
+  return loadingPromise;
+}
+
+/* =========================
+   SUBJECT UI
+   ========================= */
+function loadSubjects(){
+  const semester=document.getElementById("semester").value;
+  const select=document.getElementById("subject");
+  const subjects=subjectsBySemester[semester]||[];
+
+  select.innerHTML='<option value="">All Subjects</option>';
+  subjects.forEach(s=>{
+    const o=document.createElement("option");
+    o.value=s;o.textContent=s;
+    select.appendChild(o);
+  });
+
+  renderSubjectCards();
+}
+
+function getFilteredBase(){
+  const branch=document.getElementById("branch").value;
+  const semester=document.getElementById("semester").value;
+  return resources.filter(r=>same(r.branch,branch)&&same(r.semester,semester));
+}
+
+function countType(subject,type){
+  const wanted=typeMap[type];
+  return getFilteredBase().filter(r=>
+    (!subject || subjectEquivalent(r.subject,subject)) &&
+    typeEquivalent(r.type,wanted)
+  ).length;
+}
+
+function renderSubjectCards(){
+  const wrap=document.getElementById("subjectCards");
+  const subject=document.getElementById("subject").value;
+  const subjects=subjectsBySemester[document.getElementById("semester").value]||[];
+
+  if(!subjects.length){
+    wrap.innerHTML='<div class="no-results" style="grid-column:1/-1">Subjects for this semester will appear here as NewLjHub is populated.</div>';
+    return;
+  }
+
+  const visible=subject?[subject]:subjects;
+
+  wrap.innerHTML=visible.map(s=>{
+    const total=getFilteredBase().filter(r=>subjectEquivalent(r.subject,s)).length;
+    return `
+      <div class="card" onclick="openSubject('${encodeURIComponent(s)}')">
+        <div class="icon">📘</div>
+        <h3>${escapeHTML(s)}</h3>
+        <div class="muted">${total} resource${total===1?"":"s"} available · Tap to explore</div>
+      </div>`;
+  }).join("");
+}
+
+function openSubject(encoded){
+  const subject=decodeURIComponent(encoded);
+  const branch=document.getElementById("branch").value;
+  const semester=document.getElementById("semester").value;
+
+  document.getElementById("resourceTitle").textContent=subject+" Resources";
+  document.getElementById("resourceSub").textContent=branch+" • "+semester+" • "+subject;
+
+  const list=document.getElementById("resourceList");
+  list.innerHTML=Object.keys(typeMap).map(type=>{
+    const n=countType(subject,type);
+    return `
+      <div class="card" style="min-height:0" onclick="openResource('${encodeURIComponent(subject)}','${encodeURIComponent(type)}')">
+        <div class="resource-top">
+          <div>
+            <div class="icon" style="margin-bottom:6px">${typeIcons[type]}</div>
+            <h3>${type}</h3>
+          </div>
+          <span class="pill">${n}</span>
+        </div>
+        <div class="muted">Open ${type.toLowerCase()}</div>
+      </div>`;
+  }).join("");
+
+  document.getElementById("resourceModal").classList.add("show");
+}
+
+function openResource(encodedSubject,encodedType){
+  const subject=decodeURIComponent(encodedSubject);
+  const displayType=decodeURIComponent(encodedType);
+  const wanted=typeMap[displayType];
+
+  const branch=document.getElementById("branch").value;
+  const semester=document.getElementById("semester").value;
+
+  document.getElementById("resourceTitle").textContent=displayType+" Resources";
+  document.getElementById("resourceSub").textContent=branch+" • "+semester+" • "+subject;
+
+  const matches=resources.filter(r=>
+    same(r.branch,branch) &&
+    same(r.semester,semester) &&
+    subjectEquivalent(r.subject,subject) &&
+    typeEquivalent(r.type,wanted) &&
+    r.file
+  );
+
+  const list=document.getElementById("resourceList");
+
+  if(!matches.length){
+    list.innerHTML=`
+      <div class="no-results">
+        No ${escapeHTML(displayType.toLowerCase())} found for <b>${escapeHTML(subject)}</b> yet.<br><br>
+        If you just uploaded a file, wait a few seconds and refresh the page.
+        <br><br>
+        <button class="primary" onclick="reloadResourcesAndOpen('${encodeURIComponent(subject)}','${encodeURIComponent(displayType)}')">↻ Refresh Resources</button>
+        <button class="close" style="margin-left:7px" onclick="openUpload()">Upload Resource</button>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML=matches.map((r,i)=>`
+    <div class="resource">
+      <div class="resource-top">
+        <strong>${escapeHTML(displayType)} ${matches.length>1?"#"+(i+1):""}</strong>
+        <span class="pill">${escapeHTML(r.subject)}</span>
+      </div>
+      <a href="${escapeHTML(r.file)}" target="_blank" rel="noopener">Open ↗</a>
+    </div>
+  `).join("");
+}
+
+async function reloadResourcesAndOpen(encodedSubject,encodedType){
+  const subject=decodeURIComponent(encodedSubject);
+  const type=decodeURIComponent(encodedType);
+  try{
+    await loadResources(true);
+  }catch(e){}
+  openResource(encodeURIComponent(subject),encodeURIComponent(type));
+}
+
+/* =========================
+   SEARCH
+   ========================= */
+function levenshtein(a,b){
+  if(a===b)return 0;
+  if(!a)return b.length;if(!b)return a.length;
+  let prev=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){
+    const cur=[i];
+    for(let j=1;j<=b.length;j++){
+      cur[j]=Math.min(
+        cur[j-1]+1,
+        prev[j]+1,
+        prev[j-1]+(a[i-1]===b[j-1]?0:1)
+      );
+    }
+    prev=cur;
+  }
+  return prev[b.length];
+}
+
+function runSearch(){
+  const q=norm(document.getElementById("searchBox").value);
+  const box=document.getElementById("searchResults");
+
+  if(!q){box.innerHTML="";return}
+
+  const tokens=q.split(" ").filter(Boolean);
+  const scored=resources.map(r=>{
+    const text=norm([r.branch,r.semester,r.subject,r.type,r.file].join(" "));
+    let score=0;
+
+    if(text.includes(q)) score+=100;
+    tokens.forEach(t=>{
+      if(text.includes(t)) score+=25;
+      else{
+        const words=text.split(" ");
+        const best=Math.min(...words.map(w=>levenshtein(t,w)));
+        if(best<=1)score+=10;
+        else if(best<=2 && t.length>=4)score+=5;
+      }
+    });
+
+    if(subjectEquivalent(r.subject,q)) score+=45;
+    if(typeEquivalent(r.type,q)) score+=40;
+
+    return {...r,score};
+  }).filter(r=>r.score>0).sort((a,b)=>b.score-a.score).slice(0,12);
+
+  if(!scored.length){
+    box.innerHTML='<div class="no-results">No matching resources found.</div>';
+    return;
+  }
+
+  box.innerHTML=`
+    <div class="panel" style="text-align:left">
+      <strong>${scored.length} result${scored.length===1?"":"s"} found</strong>
+      <div class="resource-list">
+        ${scored.map(r=>`
+          <div class="resource">
+            <div class="resource-top">
+              <strong>${escapeHTML(r.subject||"Resource")}</strong>
+              <span class="pill">${escapeHTML(r.type)}</span>
+            </div>
+            <div class="muted">${escapeHTML(r.branch)} • ${escapeHTML(r.semester)}</div>
+            <a href="${escapeHTML(r.file)}" target="_blank" rel="noopener">Open ↗</a>
+          </div>`).join("")}
+      </div>
+    </div>`;
+}
+
+/* =========================
+   NEWLJ AI
+   ========================= */
+function openAI(){
+  document.getElementById("aiModal").classList.add("show");
+  document.getElementById("aiQuestion").focus();
+}
+
+function askAI(){
+  const q=document.getElementById("aiQuestion").value.trim();
+  const status=document.getElementById("aiStatus");
+  const answer=document.getElementById("aiAnswer");
+
+  if(!q){
+    status.textContent="Please enter a question.";
+    answer.style.display="none";
+    return;
+  }
+
+  const branch=document.getElementById("branch").value;
+  const semester=document.getElementById("semester").value;
+  const subject=document.getElementById("subject").value || "";
+
+  status.textContent="NewLj AI is thinking...";
+  answer.style.display="none";
+
+  const callback="newLjAI_"+Date.now()+"_"+Math.floor(Math.random()*100000);
+  const params=new URLSearchParams({
+    action:"ai",
+    callback,
+    branch,
+    semester,
+    subject,
+    q
+  });
+
+  const script=document.createElement("script");
+  let finished=false;
+
+  window[callback]=(data)=>{
+    finished=true;
+    cleanup();
+
+    if(data && data.ok){
+      status.textContent="✓ NewLj AI answered";
+      answer.textContent=data.answer||"No answer returned.";
+      answer.style.display="block";
+    }else{
+      status.textContent=(data&&data.error)||"NewLj AI could not answer.";
+      answer.style.display="none";
+    }
+  };
+
+  function cleanup(){
+    try{delete window[callback]}catch(e){window[callback]=undefined}
+    if(script.parentNode)script.parentNode.removeChild(script);
+  }
+
+  script.onerror=()=>{
+    if(finished)return;
+    finished=true;
+    cleanup();
+    status.textContent="NewLj AI server could not be reached.";
+    answer.textContent="Please try again in a moment.";
+    answer.style.display="block";
+  };
+
+  script.src=AI_API_URL+"?"+params.toString();
+  document.body.appendChild(script);
+}
+
+/* =========================
+   STARTUP
+   ========================= */
+loadSubjects();
+loadResources().catch(()=>{});
+
+/* Refresh resource feed when returning to the tab. */
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible" && !resourcesLoaded){
+    loadResources().catch(()=>{});
+  }
+});
+</script>
+</body>
+</html>
