@@ -324,44 +324,50 @@ function gtuMessage(message) {
     alert(message + " is coming soon to GTUHUB!");
 }
 function loadSubjects() {
-    const API_URL = "https://script.google.com/macros/s/AKfycbyWZ-IO31cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPwhvpUwlwpgA9IpMMmy7kQX5/exec";
-
-    const branchSelect = document.getElementById("branch");
-    const semesterSelect = document.getElementById("semester");
+    const branch = document.getElementById("branch").value;
+    const semester = document.getElementById("semester").value;
     const subjectSelect = document.getElementById("subject");
 
-    if (!branchSelect || !semesterSelect || !subjectSelect) return;
+    if (!subjectSelect) return;
 
-    const branch = branchSelect.value;
-    const semester = semesterSelect.value;
+    const subjectsBySemester = {
+        "Semester 1": [
+            "Mathematics-1",
+            "Engineering Graphics & Design",
+            "Universal Human Values",
+            "BE",
+            "Physics"
+        ],
+
+        "Semester 2": [
+            "Mathematics-2",
+            "Basic Electrical Engineering",
+            "Basic Mechanical Engineering",
+            "Programming for Problem Solving",
+            "English for Technical Communication",
+            "Fundamental of AI"
+        ],
+
+        "Semester 3": [
+            "DS",
+            "PS",
+            "PCE",
+            "DF",
+            "DBMS",
+            "I.C"
+        ]
+    };
 
     subjectSelect.innerHTML = '<option value="">All Subjects</option>';
 
-    fetch(API_URL)
-        .then(response => response.json())
-        .then(data => {
-            const subjects = [...new Set(
-                data
-                    .filter(resource =>
-                        String(resource.branch).trim() === String(branch).trim() &&
-                        String(resource.semester).trim() === String(semester).trim() &&
-                        resource.subject
-                    )
-                    .map(resource => String(resource.subject).trim())
-            )];
+    const subjects = subjectsBySemester[semester] || [];
 
-            subjects.sort();
-
-            subjects.forEach(subject => {
-                const option = document.createElement("option");
-                option.value = subject;
-                option.textContent = subject;
-                subjectSelect.appendChild(option);
-            });
-        })
-        .catch(error => {
-            console.error("Subject loading error:", error);
-        });
+    subjects.forEach(function(subject) {
+        const option = document.createElement("option");
+        option.value = subject;
+        option.textContent = subject;
+        subjectSelect.appendChild(option);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
