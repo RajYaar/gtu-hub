@@ -197,7 +197,7 @@ organized for your GTU journey.
 
 <div class="search">
 <input id="searchBox" placeholder="Search assignments, subjects, notes...">
-<button onclick="search()">Search</button>
+<button onclick="searchResources()">Search</button>
 </div>
 
 </section>
@@ -505,7 +505,7 @@ sem = sem || document.getElementById("semester")?.value || "Semester 1";
 
         });
 }
-function search() {
+function searchResources() {
     const input = document.getElementById("searchBox");
 
     if (!input) return;
