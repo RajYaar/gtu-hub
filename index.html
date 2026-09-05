@@ -506,17 +506,133 @@ sem = sem || document.getElementById("semester")?.value || "Semester 1";
         });
 }
 function search() {
-
     const input = document.getElementById("searchBox");
 
     if (!input) return;
 
     const query = input.value.trim().toLowerCase();
 
-    if (query === "") {
+    if (!query) {
         alert("Please type something to search.");
         return;
     }
+
+    const API_URL = "https://script.google.com/macros/s/AKfycbyWZ-IO31cpKSigpn7pjemtK5epJMFp1ASIu0f5GJ1lPwhvpUwlwpgA9IpMMmy7kQX5/exec";
+
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+
+            const matches = data.filter(resource => {
+                const text = `
+                    ${resource.branch || ""}
+                    ${resource.semester || ""}
+                    ${resource.subject || ""}
+                    ${resource.type || ""}
+                `.toLowerCase();
+
+                return text.includes(query);
+            });
+
+            let results = "";
+
+            if (matches.length === 0) {
+
+                results = `
+                    <p style="margin-top:20px;">
+                        No resources found for "<b>${input.value}</b>".
+                    </p>
+                `;
+
+            } else {
+
+                results = matches.map((resource, index) => `
+                    <a
+                        href="${resource.file}"
+                        target="_blank"
+                        style="
+                            display:block;
+                            margin:10px 0;
+                            padding:14px 16px;
+                            background:#667eea;
+                            color:white;
+                            text-decoration:none;
+                            border-radius:12px;
+                            font-weight:600;
+                        "
+                    >
+                        📄 ${resource.subject || "Resource"} — ${resource.type}
+                        <br>
+                        <small>
+                            ${resource.branch} • ${resource.semester}
+                        </small>
+                        <br>
+                        <span style="font-size:13px;">
+                            Open Resource →
+                        </span>
+                    </a>
+                `).join("");
+
+            }
+
+            const searchBox = document.createElement("div");
+
+            searchBox.id = "gtuSearchResults";
+
+            searchBox.innerHTML = `
+                <div class="gtu-overlay">
+
+                    <div class="gtu-popup">
+
+                        <button
+                            class="gtu-close"
+                            onclick="document.getElementById('gtuSearchResults').remove()"
+                        >
+                            ×
+                        </button>
+
+                        <div class="gtu-icon">🔎</div>
+
+                        <h2>Search Results</h2>
+
+                        <p class="gtu-selected">
+                            Results for "${input.value}"
+                        </p>
+
+                        <div style="margin-top:20px;">
+                            ${results}
+                        </div>
+
+                        <button
+                            onclick="window.open('https://forms.gle/493aiSTtKXrUL5st9','_blank')"
+                            style="
+                                margin-top:15px;
+                                padding:12px 20px;
+                                border:none;
+                                border-radius:10px;
+                                cursor:pointer;
+                                font-weight:600;
+                            "
+                        >
+                            ⬆️ Upload Resource
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+            document.body.appendChild(searchBox);
+
+        })
+        .catch(error => {
+
+            console.error(error);
+
+            alert("Unable to search resources. Please try again.");
+
+        });
+}
 
     const cards = document.querySelectorAll(".card");
 
